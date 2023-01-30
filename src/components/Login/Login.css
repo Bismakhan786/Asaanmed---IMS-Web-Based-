@@ -1,0 +1,149 @@
+.Login{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: whitesmoke;
+}
+
+.Login-form{
+    width: 25vw;
+    height: 60vh;
+    box-sizing: border-box;
+    overflow: hidden;
+    background-color: white;
+    border: 1px solid whitesmoke;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 30px;
+}
+
+
+.Login-form > p:first-child {
+    color: #666;
+    font-weight: bold;
+    font: bold 0.9vmax cursive;
+}
+
+.Login-form > div {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.Login-form > div > input {
+    padding: 0.6vmax 4vmax;
+    padding-right: 1vmax;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.267);
+    border-radius: 4px;
+    font: 300 0.9vmax cursive;
+    outline: none;
+}
+
+.Login-form > div > svg {
+    position: absolute;
+    transform: translateX(1vmax);
+    color: rgba(0, 0, 0, 0.623);
+    font-size: 1.3vmax;
+}
+
+.Login-form > a {
+    text-decoration: none;
+    color: red;
+    font: 300 0.6vmax cursive;
+    margin: 0;
+    padding: 0;
+}
+
+.Login-form > a:hover{
+    color: crimson;
+    transform: scale(1.1);
+}
+
+.loginBtn{
+    width: 100%;
+    padding: 0.6vmax 4vmax;
+    background-color: #e37e38;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font: 300 0.9vmax cursive;
+    box-shadow: 2px 2px 10px -5px grey;
+}
+
+.loginBtn:hover{
+    background-color: #c45c12;
+    cursor: pointer;
+}
+
+.logo-container{
+    position: absolute;
+    top: calc(35px + 10vh);
+    background-color: white;
+    padding: 5px 10px 5px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid whitesmoke;
+    border-bottom-left-radius: 100%;
+    border-bottom-right-radius: 100%;
+    border-top-right-radius: 100%;
+}
+
+.logo{
+    width: 6vmax;
+    height: 6vmax;
+}
+
+.loading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.error{
+    color: red;
+    font: 300 0.6vmax cursive;
+    margin: 0;
+    padding: 0;
+}
+
+@media screen and (max-width: 600px) {
+    .Login{
+        background-color: white;
+    }
+    .Login-form{
+        border: none;
+        width: 100vw;
+        height: 50vh;
+        padding: 4vmax;
+    }
+    .Login-form > div > input {
+        padding: 1vmax 4vmax;
+        font: 300 1.3vmax cursive;
+    }
+    .Login-form > div > svg, .Login-form > p, .Login-form > a, .loginBtn{
+        font: 300 1.3vmax cursive;
+    }
+    .loginBtn{
+        padding: 1vmax 4vmax;
+    }
+    .logo-container{
+        border: none;
+        top: calc(80px + 10vh);
+    }
+}
+
+@media screen and (max-width: 1024px) and (min-width: 600px){
+    .Login-form{
+        width: 40vw;
+    }
+}

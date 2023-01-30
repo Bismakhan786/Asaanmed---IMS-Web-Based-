@@ -1,0 +1,121 @@
+.table-container {
+  height: 91vh;
+  background-color: white;
+}
+
+.order-main {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0.7vmax 1.6vmax;
+}
+
+.status-selector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1vmax;
+}
+
+.status-selector > div:first-child {
+  display: flex;
+  align-items: center;
+}
+
+.status-selector > div:first-child > span {
+  color: rgba(0, 0, 0, 0.6);
+  font: 300 0.9vmax arial;
+  margin-right: 1vmax;
+}
+
+.status-selector > div > button {
+  padding: 0.7vmax 1.6vmax;
+  background-color: #e4a67a;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  color: white;
+  transition: all 0.5s ease;
+}
+
+.status-selector > div > button:hover:enabled {
+  background-color: #e37e38;
+  cursor: pointer;
+}
+
+.order-container {
+  height: fit-content;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  padding: 2vmax 2vmax;
+}
+
+.reciept-logo{
+    text-align: center;
+    letter-spacing: 0.3vmax;
+    font: bold 1.2vmax arial !important;
+    margin: 0.3vmax 0 !important;
+}
+
+.order-container span {
+  font: 300 0.9vmax arial;
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 0.5vmax !important;
+}
+
+.order-container p {
+  font: bold 0.9vmax arial;
+}
+
+.order-item-table {
+  overflow-x: scroll;
+}
+
+.order-items table {
+  width: 100%;
+  border-collapse: separate !important;
+}
+
+.customer-info > div {
+  display: grid;
+  grid-template-columns: 7vmax 1fr;
+}
+
+.voucher-details > div {
+  display: grid;
+  grid-template-columns: 7vmax 1fr;
+}
+
+.shipping-details > div {
+  display: grid;
+  grid-template-columns: 7vmax 1fr;
+}
+
+.separator {
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.1) !important;
+  padding: 0% !important;
+}
+
+.order-summary {
+  font: bold 0.9vmax arial !important;
+}
+
+.stepper {
+  margin-bottom: 1vmax;
+}
+
+.css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-active,
+.css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-completed {
+  color: #e37e38 !important;
+}
+
+.css-1hv8oq8-MuiStepLabel-label{
+    font: 300 0.9vmax arial !important;
+    color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root{
+    width: 1.6vmax !important;
+    height: 1.6vmax !important;
+    font-size: 1vmax !important;
+}

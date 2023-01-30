@@ -1,0 +1,179 @@
+.table-container {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  background-color: white;
+}
+
+.table-overflow {
+  overflow-x: scroll;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+table input[type="checkbox"] {
+  min-height: 10px;
+  width: 12px;
+  min-height: 10px;
+  height: 12px;
+  margin: auto;
+  accent-color: #e37e38;
+}
+
+thead input[type="checkbox"] {
+  min-height: 10px;
+  width: 16px;
+  min-height: 10px;
+  height: 16px;
+}
+
+table input[type="checkbox"]:hover {
+  cursor: pointer;
+}
+
+th {
+  background-color: rgba(0, 0, 0, 0.05);
+  font-size: 1vmax;
+  color: rgba(0, 0, 0, 0.7);
+  padding: 0.5vmax 1vmax;
+  text-align: left;
+}
+
+td {
+  text-align: left;
+  color: rgba(0, 0, 0, 0.7);
+  padding: 0.5vmax 1vmax;
+
+  font-size: 0.9vmax;
+}
+
+td > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+td > div > a > svg,
+td > div > button > svg,
+.table-footer > button > svg {
+  color: rgba(0, 0, 0, 0.3);
+  transition: all 0.5s;
+}
+
+td > div > a > svg:hover,
+td > div > button > svg:hover,
+.table-footer > button > svg:hover {
+  color: #e37e38;
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+td > div > button,
+.table-footer > button {
+  border: none;
+  background-color: transparent;
+}
+
+tbody > tr {
+  transition: all 0.5s;
+}
+
+tbody > tr:hover {
+  transform: scale(1.002);
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+
+.hidden-row {
+  background-color: #eee8dc;
+}
+
+.hidden-row:hover {
+  background-color: #eee8dc;
+  transform: none;
+  cursor: pointer;
+}
+
+.hidden-row-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hidden-row-content > span {
+  font: bold 0.9vmax arial;
+}
+
+.hidden-row-content > button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: white;
+  padding: 0.2vmax 2vmax;
+  border-radius: 5px;
+  transition: all 0.5s ease;
+}
+
+.hidden-row-content > button:hover{
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.table-footer {
+  padding: 0.3vmax 1.6vmax;
+  background-color: #eee8dc;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.2vmax;
+}
+
+.table-footer > div {
+  display: flex;
+  align-items: center;
+}
+
+.table-footer > p {
+  margin: 0;
+  font: bold 0.9vmax sans-serif;
+  color: rgba(0, 0, 0, 0.5);
+  margin-right: 3vmax;
+}
+
+.bulk-action-button {
+  background-color: transparent;
+  outline: none;
+  border: none;
+}
+
+.bulk-action-button > svg {
+  font-size: 1.2vmax;
+  color: rgba(0, 0, 0, 0.5);
+  transition: all 0.5s ease;
+}
+
+.bulk-action-button > svg:hover {
+  color: #e37e38;
+  cursor: pointer;
+  transform: scale(1.2);
+}
+
+.bulk-action-btn-txt{
+  color: rgba(0, 0, 0, 0.7);
+  font: bold 0.9vmax arial;
+  transition: all 0.5s ease;
+}
+
+.bulk-action-btn-txt:hover{
+  color: #e37e38;
+  cursor: pointer;
+}

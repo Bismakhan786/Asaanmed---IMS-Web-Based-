@@ -1,0 +1,33 @@
+.Header{
+    position: absolute;
+    top: 0%;
+    padding: 1.5% 5%;
+    width: 90%;
+    max-width: 100%;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background-color: transparent;
+}
+
+.Header > p {
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: bold;
+    letter-spacing: 0.2em;
+    font-size: calc(1px + 2vmin);
+}
+
+
+.Header > div > a {
+    text-decoration: none;
+    font-size: calc(1px + 1.6vmin);
+    color: rgba(255, 255, 255, 0.7);
+    margin-left: calc(4px + 2vmin);
+    transition: all 0.5s ease;
+}
+
+.Header > div > a:hover{
+    color: #e37e38;
+}

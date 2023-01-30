@@ -1,0 +1,83 @@
+.table-container {
+  height: 91vh;
+  background-color: white;
+}
+
+.voucher-main-container{
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.7vmax 1.6vmax;
+}
+
+.voucher-form-container{
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 1.6vmax;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+
+}
+
+.voucher-form-container > div{
+  display: grid;
+  grid-template-columns: 9vmax 1fr;
+  align-items: center;
+  margin-bottom: 1vmax;
+}
+
+.voucher-form-container label{
+  font: 300 1vmax arial;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.voucher-form-container input{
+  padding: 0.7vmax 1vmax;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  outline: none;
+  font: 300 1vmax arial;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.radio-group{
+  display: flex !important;
+}
+
+.voucher-create-btn{
+  display: flex !important;
+  justify-content: center;
+}
+
+.voucher-create-btn > button{
+  border: none;
+  background-color: #e37e38;
+  padding: 0.5vmax 2.5vmax;
+  border-radius: 5px;
+  color: white;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.5s ease;
+}
+
+.voucher-create-btn > button:hover:enabled{
+  transform: scale(1.02);
+  cursor: pointer;
+}
+
+.css-ahj2mt-MuiTypography-root{
+  font: 300 0.9vmax arial !important;
+}
+
+.voucher-id{
+  margin-top: 2vmax;
+  margin-bottom: 0.5vmax !important;
+}
+
+.voucher-id> span, .issuance-date > span{
+  color: rgba(0, 0, 0, 0.7);
+  font: bold 0.8vmax cursive;
+}
+

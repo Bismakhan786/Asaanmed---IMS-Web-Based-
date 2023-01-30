@@ -1,0 +1,123 @@
+.main{
+    height: 91vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.details{
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    align-items: center;
+    padding: 0.5vmax 1.6vmax;
+}
+
+.details > div:first-child{
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.details > div:first-child > svg {
+    padding: 1.6vmax;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: white;
+    border-radius: 10%;
+    font-size: 6vmax;
+}
+
+.details > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 80%;
+    padding: 1.6vmax;
+}
+
+
+
+.forms  div{
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.6vmax;
+}
+
+
+
+.forms div > p{
+    color: rgba(0, 0, 0, 0.7);
+    font: bold 0.9vmax arial;
+    margin-right: 10px;
+}
+
+.forms  div > input{
+    padding: 0.6vmax 4vmax;
+    padding-right: 1vmax;
+    width: 50%;
+    box-sizing: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.267);
+    border-radius: 4px;
+    font: 300 0.9vmax arial;
+    outline: none;
+}
+
+.forms  div > svg {
+    position: absolute;
+    transform: translateX(1vmax);
+    color: rgba(0, 0, 0, 0.4);
+    font-size: 1.3vmax;
+}
+
+.forms > form > p{
+    margin: 0;
+    color: rgba(0, 0, 0, 0.4);
+    font: 300 0.8vmax arial;
+}
+
+.forms > form>p:hover{
+    color: red;
+    cursor: pointer;
+}
+
+.error{
+    color: red;
+    font: 300 0.8vmax sans-serif;
+    margin: 0;
+}
+
+.forms > form > input[type=submit], .forms > form > input[type=button]{
+    margin-top: 2vmax;
+    margin-bottom: 2vmax;
+    padding: 0.5vmax 1.5vmax;
+    margin-right: 0.6vmax;
+    border: none !important;
+    background-color: #e37e38;
+    color: white;
+    font: 300 0.9vmax arial;
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+    transition: all 0.5s;
+}
+
+.forms > form > input[type=submit]:hover:enabled, .forms > form > input[type=button]:hover:enabled{
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.forms > form > input[type=submit]:disabled, .forms > form > input[type=button]:disabled{
+    cursor: auto;
+    opacity: 0.7;
+}
+
+@media screen and (max-width: 600px) {
+    .forms > form > div > input{
+        width: 100%;
+    }
+    .validation{
+        width: 100%;
+        flex-direction: column;
+    }
+}
+

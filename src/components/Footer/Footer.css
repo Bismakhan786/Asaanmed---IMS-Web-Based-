@@ -1,0 +1,58 @@
+.Footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1% 5%;
+  margin-top: 5%;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.links > p {
+  color: white;
+  font: 300 1vmax "Verdana";
+  letter-spacing: 0.1vmax;
+  padding-bottom: 1vmax;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.links > a {
+  display: block;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.5);
+  font: 300 1vmax "Verdana";
+  margin-bottom: 0.3vmax;
+  transition: all 0.5s ease;
+}
+
+.links > a:hover {
+  color: #e37e38;
+}
+
+.footer-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-logo > img {
+  width: 10vmax;
+}
+
+.footer-logo > p {
+  display: flex;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.5);
+  font: 300 1vmax "Lucida Sans";
+}
+
+.footer-logo > p > svg {
+  font-size: 1vmax;
+}
+
+.download > a {
+  display: block;
+}
+.download > a > img {
+  width: 15vmax;
+  height: auto;
+}

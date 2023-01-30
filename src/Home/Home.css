@@ -1,0 +1,147 @@
+.banner {
+  background-image: linear-gradient(to right, #565600, #000000);
+  height: 100vmin;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.banner > img {
+  height: 10vmax;
+  width: auto;
+}
+
+.banner > p {
+  font: 300 1.4vmax "Verdana";
+}
+.banner > h1 {
+  font: 600 2vmax "Fantasy";
+  letter-spacing: 0.15em;
+}
+.banner > span {
+  margin-bottom: 0.3vmax;
+  font: 300 1vmax "Verdana";
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.banner > a > button {
+  margin-top: 5vmax;
+  background-color: transparent;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  padding: 0.2vmax;
+  outline: none;
+  border: none;
+  border: 1px solid white;
+  transition: all 0.5s ease;
+}
+
+.banner > a > button:hover {
+  background-color: white;
+  color: #000000;
+  cursor: pointer;
+}
+
+.banner > a > button > svg {
+  font-size: 2vmax;
+}
+
+.banner::after {
+  content: "";
+  width: 100vw;
+  max-width: 100%;
+  height: 100vmin;
+  background-color: white;
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  clip-path: polygon(100% 75%, 0% 100%, 100% 100%);
+}
+
+/* Main Working */
+
+.plansHeading {
+  text-align: center;
+  color: rgba(0, 0, 0, 0.7);
+  letter-spacing: 0.3px;
+  font: 300 1.4vmax "Fantasy";
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  width: 20vmax;
+  padding: 1vmax;
+  margin: 5vmax auto;
+}
+
+.carousal {
+  margin: 0% 5%;
+  padding: 2%;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.01);
+}
+
+.carousal-items {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+}
+
+.carousal-details {
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
+  color: rgba(0, 0, 0, 0.7);
+  padding: 0 1vmax;
+}
+
+.carousal-details > h2 {
+  font: 600 1.8vmax "Fantasy";
+  letter-spacing: 0.1em;
+  margin-bottom: 0.4vmax;
+}
+
+.carousal-details > span {
+  font: 300 1.2vmax "Verdana";
+}
+
+.carousal-details > p {
+  margin-top: 2vmax;
+  font: 300 1vmax "Verdana";
+}
+
+.carousal-details > ul {
+  padding: 0%;
+}
+
+.carousal-details > ul > li {
+  font-size: 1vmax;
+  margin-bottom: 1rem;
+  list-style: none;
+  background: url("../ulIcon.png") no-repeat left center;
+  padding: 0px 0 3px 24px;
+  background-size: 1vmax;
+}
+
+.carousal-img > img {
+  width: 100%;
+  height: auto;
+}
+
+.partners-logo {
+  margin: 0 5%;
+  display: flex;
+  flex-direction: column;
+}
+
+.partners-logo > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.partners-logo > div > img {
+  width: 6vmax;
+  height: auto;
+  margin: 1vmax;
+}

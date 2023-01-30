@@ -1,0 +1,78 @@
+.sidebar{
+    background-color: rgb(60, 60, 60);
+    padding: 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    overflow-y: hidden;
+    width: fit-content;
+    min-width: fit-content;
+}
+
+.sidebar > a:first-child{
+    padding: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sidebar > a > img {
+    width: 50%;
+    transition: all 0.5s;
+}
+
+.sidebar > a > img:hover{
+    filter: drop-shadow(0 0 5px grey);
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: rgb(238, 238, 238, 0.5);
+    transition: all 0.5s;
+    padding: 0.1rem 0.4rem;
+    font-size: 0.8rem;
+}
+
+.sidebar a:hover, .sidebar button > p:hover{
+    color: #e37e38;
+    transform: scale(1.1);
+}
+
+
+.sidebar a > p, .sidebar button >  p{
+    display: flex;
+    align-items: center;
+}
+
+.sidebar a > p > svg, .sidebar button > p > svg{
+    margin-right: 0.5rem;
+    font-size: 1rem;
+}
+
+.sidebar button{
+    background-color: transparent;
+    color: rgb(238, 238, 238, 0.5);
+    border: none;
+    position: absolute;
+    bottom: 0;
+    cursor: pointer;
+}
+
+.sidebar button > p{
+    transition: all 0.5s;
+}
+
+.MuiTreeItem-content{
+    background-color: rgb(60, 60, 60)!important;
+    padding: 0.4rem 0.4rem 0.4rem 0 !important;
+}
+
+.css-1g86id8-MuiTreeItem-content .MuiTreeItem-label{
+    font-size: 0.8rem !important;
+}
+
+@media screen and (max-width: 768px) {
+    .sidebar{
+        display: none;
+    }
+}

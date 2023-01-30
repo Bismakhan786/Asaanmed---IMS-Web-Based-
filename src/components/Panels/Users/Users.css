@@ -1,0 +1,127 @@
+.table-container{
+    height: 91vh;
+    background-color: white;
+}
+
+.user-stats-container{
+    height: 100vh;
+    padding: 1.6vmax;
+    display: flex;
+}
+
+.graph-container{
+    width: 100%;
+    margin-top: 4vmax;
+    display: flex !important;
+    flex-direction: column;
+}
+.graph-container > div{
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1vmax;
+}
+.graph-container> div> button{
+    background-color: #e37e38;
+    color: white;
+    border: none;
+    outline: none;
+    padding: 0 1.6vmax;
+    font: 300 0.9vmax arial;
+    border-radius: 5px;
+    margin-left: 1vmax;
+    transition: all 0.5s ease;
+}
+
+.graph-container> div> button:hover:enabled{
+    background-color: #a74f11;
+    cursor: pointer;
+}
+
+.user-details-container{
+    width: 60%;
+    padding-right: 1.6vmax;
+    border-right: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.user-details-container span{
+    font: bold 1vmax arial;
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.user-details-container > div{
+    margin-bottom: 1vmax;
+    display: grid;
+    grid-template-columns: 10vmax 1fr;
+}
+
+.user-reviews-container{
+    width: 40%;
+    padding: 0 1.6vmax;
+    margin-bottom: 0.5vmax;
+}
+
+.user-reviews-container > span{
+    font: bold 1vmax arial;
+    color: rgba(0, 0, 0, 0.7);
+}
+
+
+.change-user-role{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5vmax 1.6vmax;
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.change-user-role>div:first-child{
+    display: flex;
+    align-items: center;
+}
+
+.change-user-role>div:first-child>span{
+    color: rgba(0, 0, 0, 0.7);
+    font: 300 0.9vmax arial;
+    margin-right: 1vmax;
+}
+
+.change-user-role>div:last-child>button{
+    outline: none;
+    border: none;
+    background-color: #e37e38;
+    color: white;
+    padding: 0.7vmax 1.6vmax;
+    border-radius: 5px;
+    transition: all 0.5s ease;
+}
+
+.change-user-role>div:last-child>button:hover:enabled{
+    background-color: #a74f11;
+    cursor: pointer;
+}
+
+
+
+@media screen and (max-width: 768px) {
+    .user-details-container{
+        width: 70vw;
+    }
+    .user-reviews-container{
+        width: 30vw;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .user-stats-container{
+        flex-direction: column;
+        padding: 3vmax;
+    }
+    .user-details-container{
+        width: auto;
+        border-right: none;
+    }
+    .user-reviews-container{
+        width: auto;
+        padding: 0;
+    }
+}
