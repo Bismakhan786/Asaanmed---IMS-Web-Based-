@@ -14,7 +14,7 @@ const Users = () => {
     dispatch(getAllUsers());
   }, [dispatch]);
 
-  const columns = ["ID", "Name", "Email", "Role"];
+  const columns = ["ID", "Name", "Contact"];
   const rows = [];
   const detailedData = [];
 
@@ -23,8 +23,7 @@ const Users = () => {
       rows.push({
         id: user._id,
         name: user.name,
-        email: user.email,
-        role: user.isAdmin ? "Admin" : "User",
+        contact: user.contact,
       });
       detailedData.push(user);
     });

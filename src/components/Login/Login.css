@@ -116,13 +116,34 @@
     padding: 0;
 }
 
+.mobile-text{
+    display: none;
+}
+
 @media screen and (max-width: 600px) {
     .Login{
         background-color: white;
     }
+    .logo-container{
+        display: none;
+    }
+
+    .Login-form{
+        display: none;
+    }
+
+    .mobile-text{
+        display: block;
+    }
+    
+}
+
+
+
+@media screen and (max-width: 900px) {
     .Login-form{
         border: none;
-        width: 100vw;
+        width: 80vw;
         height: 50vh;
         padding: 4vmax;
     }
@@ -142,7 +163,7 @@
     }
 }
 
-@media screen and (max-width: 1024px) and (min-width: 600px){
+@media screen and (max-width: 1024px) and (min-width: 900px){
     .Login-form{
         width: 40vw;
     }

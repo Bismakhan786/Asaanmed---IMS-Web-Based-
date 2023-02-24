@@ -15,7 +15,7 @@
 }
 
 .panel-container > div:first-child {
-  padding: 0.7vmax 1.5vmax;
+  padding: 20px 30px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -29,7 +29,7 @@
 }
 
 .panel-container > div:first-child > h1 {
-  font-size: 1.5vmax !important;
+  font-size: 1.52em !important;
   font-weight: bold !important;
 }
 
@@ -74,12 +74,20 @@
   visibility: collapse;
 }
 
-@media screen and (max-width: 768px) {
+
+@media screen and (max-width: 600px) {
   .panel {
+    height: 100vh !important;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     height: auto;
   }
+
+  .panel-container{
+    display: none;
+  }
+/* 
   .custom-sd,
   .nav-logo {
     visibility: visible !important;
@@ -89,5 +97,17 @@
   }
   .panel-container > div:first-child {
     padding: 1vmax 1.5vmax;
+  } */
+}
+
+@media screen and (max-width: 900px) {
+  .panel{
+    grid-template-columns: 1fr 4fr;
   }
+}
+
+@media screen and (max-width: 1024px) and (min-width: 900px){
+  .panel{
+    grid-template-columns: 1fr 5fr;
+  } 
 }

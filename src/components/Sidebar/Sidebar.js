@@ -34,6 +34,7 @@ function Sidebar() {
       <Link to={"/admin/dashboard"}>
         <p>
           <DashboardIcon />
+          
           Dashboard
         </p>
       </Link>
@@ -79,21 +80,7 @@ function Sidebar() {
           Users
         </p>
       </Link> 
-      <Link>
-        <TreeView
-          defaultCollapseIcon={<ExpandMoreIcon />}
-          defaultExpandIcon={<DiscountIcon />}
-        >
-          <TreeItem nodeId="1" label="Vouchers">
-            <Link to={"/admin/vouchers"}>
-              <TreeItem nodeId="2" label="All" icon={<PostAddIcon />} />
-            </Link>
-            <Link to={"/admin/vouchers/new"}>
-              <TreeItem nodeId="3" label="Create" icon={<AddIcon />} />
-            </Link>
-          </TreeItem>
-        </TreeView>
-      </Link>     
+        
 
       <button onClick={logout}>
       <p><LogoutRounded/>Logout</p>

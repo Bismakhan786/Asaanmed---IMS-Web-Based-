@@ -23,17 +23,23 @@ const OrderDetails = () => {
   let order = {
     _id: "",
     createdAt: "",
-    user: { name: "", email: "" },
+    paidAt: "",
+    deliveredAt: "",
+    user: { name: "", contact: "" },
     orderItems: [],
     shippingPrice: "",
     totalPrice: "",
     shippingInfo: {
       streetAddress: "",
+      floorOrApartment: "",
       city: "",
       postalCode: "",
     },
-    voucher: "",
-    orderStatus: ""
+    paymentInfo: {
+      paymentType: "",
+      status: "",
+    },
+    orderStatus: "",
   };
   if (data) {
     order = data[0];
@@ -43,12 +49,14 @@ const OrderDetails = () => {
   const [id, setId] = useState(order._id);
   const [user, setUser] = useState(order.user);
   const [createdAt, setCreatedAt] = useState(order.createdAt);
+  const [paidAt, setPaidAt] = useState(order.paidAt);
+  const [deliveredAt, setDeliveredAt] = useState(order.deliveredAt);
   const [orderItems, setOrderItems] = useState(order.orderItems);
   const [shippingPrice, setShippingPrice] = useState(order.shippingPrice);
   const [totalPrice, setToalPrice] = useState(order.totalPrice);
   const [shippingInfo, setShippingInfo] = useState(order.shippingInfo);
+  const [paymentInfo, setPaymentInfo] = useState(order.paymentInfo);
   const [status, setStatus] = useState(order.orderStatus);
-  const [voucher, setVoucher] = useState(order.voucher);
   const { updationInProcess, updationError } = useSelector(
     (state) => state.orders
   );
@@ -57,7 +65,7 @@ const OrderDetails = () => {
   orderItems &&
     orderItems.forEach((item) => {
       let productPrice =
-        item.product.price - item.product.price * item.product.disc;
+        item.product?.price - item.product?.price * item.product?.disc;
       let itemTotal = productPrice * item.qty;
       orderTotal += itemTotal;
     });
@@ -102,7 +110,9 @@ const OrderDetails = () => {
   const [stepNumber, setStepNumber] = useState(defaultStepNumber);
   const [completed, setCompleted] = useState([]);
   const [active, setActive] = useState([]);
-  const [disableUpdateStatus, setDisableUpdateStatus] = useState(status === "Delivered" ? true : false);
+  const [disableUpdateStatus, setDisableUpdateStatus] = useState(
+    status === "Delivered" || status === "Cancelled" ? true : false
+  );
 
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -169,7 +179,9 @@ const OrderDetails = () => {
             <div>
               <span>Status:</span>
               <Dropdown
-                defaultValue={statusOptions.filter(opt => opt.value === status)}
+                defaultValue={statusOptions.filter(
+                  (opt) => opt.value === status
+                )}
                 disabled={disableUpdateStatus}
                 options={statusOptions}
                 name={"status"}
@@ -188,7 +200,9 @@ const OrderDetails = () => {
               {steps.map((label, index) => (
                 <Step
                   key={label}
-                  completed={completed[index] || (status === "Delivered" && true)}
+                  completed={
+                    completed[index] || (status === "Delivered" && true)
+                  }
                   active={active[index]}
                 >
                   <StepLabel>{label}</StepLabel>
@@ -210,11 +224,11 @@ const OrderDetails = () => {
               <p>Customer</p>
               <div>
                 <span>Name:</span>
-                <span>{user.name}</span>
+                <span>{user?.name}</span>
               </div>
               <div>
-                <span>Email:</span>
-                <span>{user.email}</span>
+                <span>Contact:</span>
+                <span>{user?.contact}</span>
               </div>
             </div>
             <div className="order-items">
@@ -236,17 +250,17 @@ const OrderDetails = () => {
                       orderItems.map((item, index) => (
                         <tr>
                           <td>{index + 1}</td>
-                          <td>{item.product.name}</td>
+                          <td>{item.product?.name}</td>
                           <td style={{ textAlign: "right" }}>
-                            {item.product.price}
+                            {item.product?.price}
                           </td>
                           <td style={{ textAlign: "right" }}>
-                            {item.product.disc}
+                            {item.product?.disc}
                           </td>
                           <td style={{ textAlign: "right" }}>{item.qty}</td>
                           <td style={{ textAlign: "right" }}>
-                            {(item.product.price -
-                              item.product.price * item.product.disc) *
+                            {(item.product?.price -
+                              item.product?.price * item.product?.disc) *
                               item.qty}
                           </td>
                         </tr>
@@ -283,13 +297,13 @@ const OrderDetails = () => {
                 </table>
               </div>
             </div>
-            <div className="voucher-details">
+            {/* <div className="voucher-details">
               <p>Voucher Details</p>
               <div>
                 <span>Voucher:</span>
                 <span>{voucher ? voucher : "No voucher applied"}</span>
               </div>
-            </div>
+            </div> */}
             <div>
               <p>Shipping Details</p>
               <div className="shipping-details">
@@ -297,6 +311,12 @@ const OrderDetails = () => {
                   <span>Address:</span>
                   <span>{shippingInfo.streetAddress}</span>
                 </div>
+                {shippingInfo.floorOrApartment ? (
+                  <div>
+                    <span>Floor Or Apartment:</span>
+                    <span>{shippingInfo.floorOrApartment}</span>
+                  </div>
+                ) : null}
                 <div>
                   <span>Postal Code:</span>
                   <span>{shippingInfo.postalCode}</span>
@@ -305,6 +325,20 @@ const OrderDetails = () => {
                   <span>City:</span>
                   <span>{shippingInfo.city}</span>
                 </div>
+              </div>
+            </div>
+            <div>
+              <p>Payment Details</p>
+              <div className="shipping-details">
+                <div>
+                  <span>Payment Type:</span>
+                  <span>{paymentInfo.paymentType}</span>
+                </div>
+                <div>
+                  <span>Status:</span>
+                  <span>{paymentInfo.status}</span>
+                </div>
+                
               </div>
             </div>
           </div>

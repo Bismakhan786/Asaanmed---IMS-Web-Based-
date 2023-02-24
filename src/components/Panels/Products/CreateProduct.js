@@ -11,13 +11,15 @@ import { toast } from "react-toastify";
 import { Spinner } from "react-activity";
 import "react-activity/dist/Spinner.css";
 import SuccessIcon from "@mui/icons-material/CheckCircleRounded";
-import ErrorIcon from '@mui/icons-material/ErrorRounded';
+import ErrorIcon from "@mui/icons-material/ErrorRounded";
 
 const CreateProduct = () => {
   const [name, setName] = useState("");
+  const [code, setCode] = useState("");
+  const [offer, setOffer] = useState("");
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
-  const [disc, setDisc] = useState("");
+  const [stockError, setStockError] = useState("");
   const [afterDisc, setAfterDisc] = useState(price);
   const [desc, setDesc] = useState("");
   const [image, setImage] = useState("/defaultProduct.png");
@@ -28,7 +30,9 @@ const CreateProduct = () => {
 
   const dispatch = useDispatch();
   const { loading, categories } = useSelector((state) => state.categories);
-  const { creationInProcess, creationError } = useSelector((state) => state.products);
+  const { creationInProcess, creationError } = useSelector(
+    (state) => state.products
+  );
 
   useEffect(() => {
     dispatch(getAllCategories());
@@ -57,8 +61,9 @@ const CreateProduct = () => {
 
     const product = {
       name,
+      code,
+      offer,
       price,
-      disc,
       desc,
       image,
       status,
@@ -66,7 +71,7 @@ const CreateProduct = () => {
       cat: category.id,
     };
 
-    console.log(category)
+    console.log(category);
     // dispatch(addProduct(product));
   };
 
@@ -106,7 +111,7 @@ const CreateProduct = () => {
                 icon: <SuccessIcon className="successIcon" />,
                 autoClose: 5000,
               })}
-              {creationError &&
+            {creationError &&
               toast.update(toastId.current, {
                 render: creationError,
                 type: toast.TYPE.ERROR,
@@ -146,6 +151,19 @@ const CreateProduct = () => {
             </div>
 
             <div>
+              <label for={"code"}>Code:</label>
+              <input
+                type={"text"}
+                name={"code"}
+                placeholder={"Product Code"}
+                disabled={creationInProcess}
+                required
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+              />
+            </div>
+
+            <div>
               <label for={"price"}>Price:</label>
               <input
                 type={"text"}
@@ -160,34 +178,25 @@ const CreateProduct = () => {
                 }}
               />
             </div>
+
             <div>
-              <label for={"stock"}>Stock:</label>
-              <input
-                type={"number"}
-                name={"stock"}
-                placeholder={"Stock"}
-                disabled={creationInProcess}
-                required
-                value={stock}
-                onChange={(e) => setStock(e.target.value)}
-              />
-            </div>
-            <div>
-              <label for={"disc"}>Discount:</label>
+              <label for={"offer"}>Offer:</label>
               <input
                 type={"text"}
-                name={"disc"}
-                placeholder={"Discount"}
+                name={"offer"}
+                placeholder={"Discount Offer"}
                 disabled={creationInProcess}
-                value={disc}
+                value={offer}
                 onChange={(e) => {
-                  setDisc(e.target.value);
-                  const discAmount = Number(price) * Number(e.target.value);
+                  setOffer(e.target.value);
+                  const discAmount =
+                    Number(price) * (Number(e.target.value) / 100);
                   const afterDiscAmount = Number(price) - discAmount;
                   setAfterDisc(afterDiscAmount);
                 }}
               />
             </div>
+
             <div>
               <label for={"afterDisc"}>After Discount:</label>
               <input
@@ -198,6 +207,30 @@ const CreateProduct = () => {
                 placeholder="After Discount"
               />
             </div>
+            <div>
+              <label for={"stock"}>Stock:</label>
+              <input
+                type={"number"}
+                name={"stock"}
+                placeholder={"Stock"}
+                disabled={creationInProcess}
+                required
+                value={stock}
+                onChange={(e) => {
+                  setStockError("");
+                  if (e.target.value < 0) {
+                    setStockError(
+                      "Stock can't be negative, it can either be 0 or positive!"
+                    );
+                  } else {
+                    setStock(e.target.value);
+                  }
+                }}
+              />
+            </div>
+
+            {stockError && <p style={{ color: "red" }}>{stockError}</p>}
+
             <div>
               <label for={"cat"}>Category:</label>
               <Dropdown
@@ -233,8 +266,9 @@ const CreateProduct = () => {
               />
             </div>
             <div className={"product-btns"}>
-              <button onClick={submitForm} disabled={creationInProcess}>Create</button>
-              <button>Import</button>
+              <button onClick={submitForm} disabled={creationInProcess}>
+                Create
+              </button>
             </div>
           </div>
         )

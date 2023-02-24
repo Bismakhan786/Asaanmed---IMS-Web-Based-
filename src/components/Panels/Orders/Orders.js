@@ -29,8 +29,8 @@ const Orders = () => {
     orders.forEach((order) => {
       rows.push({
         id: order._id,
-        name: order.user.name,
-        email: order.user.email,
+        name: order.user?.name,
+        email: order.user?.email,
         status: order.orderStatus,
         shipping: order.shippingPrice,
         bill: order.totalPrice,

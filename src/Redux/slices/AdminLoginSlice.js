@@ -154,7 +154,7 @@ const AdminLoginSlice = createSlice({
       .addCase(loadAdmin.fulfilled, (state, action) => {
         state.loading = false;
         state.isAdmin = true;
-        state.userInfo = action.payload.user;
+        state.userInfo = action.payload.admin;
         state.accessError = null;
         state.success = true;
       })
@@ -184,7 +184,7 @@ const AdminLoginSlice = createSlice({
       .addCase(updateAdminProfile.fulfilled, (state, action) => {
         state.updateProfileInProcess = false;
         state.success = true;
-        state.userInfo = action.payload.user;
+        state.userInfo = action.payload.admin;
         state.authError = null;
       })
       .addCase(updateAdminProfile.rejected, (state, action) => {

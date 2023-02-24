@@ -15,28 +15,12 @@ export const getProductDetails = createAsyncThunk(
   }
 );
 
-export const getProductReviews = createAsyncThunk(
-    "product/get/reviews",
-    async ({ id }, { rejectWithValue }) => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/products/reviews/${id}`
-        );
-        return response.data;
-      } catch (error) {
-        return rejectWithValue(error.response.data.message);
-      }
-    }
-  );
 
 
 const initialState = {
   loadingProduct: false,
-  loadingReviews: false,
   product: null,
-  reviews: null,
   productError: null,
-  reviewsError: null,
 };
 
 const ProductDetails = createSlice({
@@ -57,18 +41,7 @@ const ProductDetails = createSlice({
         state.loadingProduct = false;
         state.productError = action.payload;
       })
-      .addCase(getProductReviews.pending, (state, action) => {
-        state.loadingReviews = true;
-      })
-      .addCase(getProductReviews.fulfilled, (state, action) => {
-        
-        state.reviews = action.payload.reviews;
-        state.loadingReviews = false;
-      })
-      .addCase(getProductReviews.rejected, (state, action) => {
-        state.loadingReviews = false;
-        state.reviewsError = action.payload;
-      })
+      
   },
 });
 

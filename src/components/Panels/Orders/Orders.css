@@ -4,7 +4,7 @@
 }
 
 .order-main {
-  height: 100vh;
+  /* height: 100vh; */
   display: flex;
   flex-direction: column;
   padding: 0.7vmax 1.6vmax;
@@ -48,6 +48,7 @@
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 5px;
   padding: 2vmax 2vmax;
+  margin-bottom: 20px;
 }
 
 .reciept-logo{

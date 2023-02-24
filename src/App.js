@@ -13,13 +13,10 @@ import Users from "./components/Panels/Users/Users";
 import Products from "./components/Panels/Products/Products";
 import Orders from "./components/Panels/Orders/Orders";
 import Categories from "./components/Panels/Categories/Categories";
-import Vouchers from "./components/Panels/Vouchers/Vouchers";
 import AdminProfile from "./components/Panels/AdminProfile";
 import CreateProduct from "./components/Panels/Products/CreateProduct";
-import CreateVoucher from "./components/Panels/Vouchers/CreateVoucher";
 import CreateCategory from "./components/Panels/Categories/CreateCategory";
 import ProductDetails from "./components/Panels/Products/ProductDetails";
-import VoucherDetails from "./components/Panels/Vouchers/VoucherDetails";
 import OrderDetails from "./components/Panels/Orders/OrderDetails";
 import UserDetails from "./components/Panels/Users/UserDetails";
 import CategoryDetails from "./components/Panels/Categories/CategoryDetails";
@@ -82,17 +79,7 @@ function App() {
               path="/admin/categories/new"
               element={<CreateCategory />}
             />
-            <Route exact path="/admin/vouchers" element={<Vouchers />} />
-            <Route
-              exact
-              path="/admin/vouchers/new"
-              element={<CreateVoucher />}
-            />
-            <Route
-              exact
-              path="/admin/vouchers/details/:id"
-              element={<VoucherDetails />}
-            />
+            
             <Route exact path="/admin/profile" element={<AdminProfile />} />
           </Route>
         </Routes>

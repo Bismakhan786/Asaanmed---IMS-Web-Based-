@@ -4,7 +4,7 @@ import logo from "../../logo.png";
 import { MdMailOutline, MdLockOpen } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { adminLogin } from "../../Redux/slices/AdminLoginSlice";
+import { adminLogin, loadAdmin } from "../../Redux/slices/AdminLoginSlice";
 import { Dots } from "react-activity";
 import "react-activity/dist/library.css";
 import { useNavigate } from "react-router-dom";
@@ -22,15 +22,23 @@ function Login() {
   };
 
   useEffect(() => {
+    dispatch(loadAdmin())
     if(isAdmin){
       navigate('/admin/dashboard')
     }
-  }, [navigate, isAdmin])
+  }, [dispatch, navigate, isAdmin])
 
   return (
     <div className="Login">
       <div className="logo-container">
         <img src={logo} className="logo" />
+      </div>
+      <div className="mobile-text">
+        <div style={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
+        <img src={logo} className="logo" />
+
+        </div>
+        <p style={{textAlign: 'center'}}>Open in Laptop or PC for best user experience..</p>
       </div>
       <form className="Login-form">
         <p>Login</p>

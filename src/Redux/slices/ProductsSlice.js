@@ -1,11 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import _ from "lodash";
 
 export const getProductsFromAPI = createAsyncThunk(
   "products/getProducts",
   async (arg, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/products`);
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/products`
+      );
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data.message);
@@ -34,11 +37,10 @@ export const addProduct = createAsyncThunk(
   "products/create",
   async (productData, { rejectWithValue }) => {
     try {
-      
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/admin/product/create`,
         productData,
-        {withCredentials: true}
+        { withCredentials: true }
       );
       console.log(response.data);
 
@@ -67,11 +69,13 @@ export const updateProduct = createAsyncThunk(
 );
 
 const initialState = {
-  loading: false,
+  loadingProducts: false,
   creationInProcess: false,
   deletionInProcess: false,
   updationInProcess: false,
   products: [],
+  productsCount: null,
+  mostSellingProducts: [],
   selectedProducts: [],
   updatedProduct: null,
   deletedProduct: null,
@@ -105,32 +109,34 @@ const ProductsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getProductsFromAPI.pending, (state, action) => {
-        state.loading = true;
+        state.loadingProducts = true;
       })
       .addCase(getProductsFromAPI.fulfilled, (state, action) => {
         state.products = action.payload.products;
-        state.loading = false;
+        state.productsCount = action.payload.productCount;
+        state.mostSellingProducts = _.orderBy(action.payload.products, "numOfOrders", "desc").slice(0, 5)
+        state.loadingProducts = false;
       })
       .addCase(getProductsFromAPI.rejected, (state, action) => {
-        state.loading = false;
+        state.loadingProducts = false;
         state.error = action.payload;
       })
       .addCase(deleteProduct.pending, (state, action) => {
-        state.loading = true;
+        state.loadingProducts = true;
         state.deletionInProcess = true;
       })
       .addCase(deleteProduct.fulfilled, (state, action) => {
         state.products = state.products.filter(
           (product) => product._id !== action.payload.product._id
         );
-        state.loading = false;
+        state.loadingProducts = false;
         state.deletionInProcess = false;
-        state.deletionError = null
-        state.deletedProduct = action.payload.product
+        state.deletionError = null;
+        state.deletedProduct = action.payload.product;
       })
       .addCase(deleteProduct.rejected, (state, action) => {
-        state.loading = false;
-        state.deletionInProcess = false
+        state.loadingProducts = false;
+        state.deletionInProcess = false;
         state.deletionError = action.payload;
       })
       .addCase(addProduct.pending, (state, action) => {

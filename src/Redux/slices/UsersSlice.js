@@ -1,30 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import _ from "lodash";
 
 export const getAllUsers = createAsyncThunk(
   "users",
   async (arg, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/admin/users`
+        `${process.env.REACT_APP_API_URL}/admin/users`,
+        {
+          withCredentials: true,
+        }
       );
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response.data.message);
-    }
-  }
-);
-
-export const updateUser = createAsyncThunk(
-  "users/update",
-  async ({ id, isAdmin }, { rejectWithValue }) => {
-    try {
-      const response = await axios.put(
-        `${process.env.REACT_APP_API_URL}/admin/users/${id}`,
-        {isAdmin},
-        { withCredentials: true }
-      );
-
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data.message);
@@ -53,22 +40,7 @@ export const getUserOrders = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/admin/orders/user/${id}`,
-        { withCredentials: true }
-      );
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response.data.message);
-    }
-  }
-);
-
-export const getOrdersAndReviews = createAsyncThunk(
-  "users/orderAndReviews",
-  async (id, { rejectWithValue }) => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/admin/users/ordersAndReviews/${id}`,
+        `${process.env.REACT_APP_API_URL}/admin/users/orders/${id}`,
         { withCredentials: true }
       );
       return response.data;
@@ -79,18 +51,16 @@ export const getOrdersAndReviews = createAsyncThunk(
 );
 
 const initialState = {
-  loading: false,
+  loadingUsers: false,
   deletionInProcess: false,
-  updationInProcess: false,
-  loadingOrdersAndReviews: false,
+  loadingOrders: false,
   users: [],
+  chasingUsers: [],
+  usersCount: null,
   orders: [],
-  reviews: [],
-  updatedUser: null,
   deletedUser: null,
   error: null,
-  errorOrdersAndReviews: null,
-  updationError: null,
+  errorOrders: null,
   deletionError: null,
 };
 
@@ -101,58 +71,47 @@ const UsersSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getAllUsers.pending, (state, action) => {
-        state.loading = true;
+        state.loadingUsers = true;
       })
       .addCase(getAllUsers.fulfilled, (state, action) => {
         state.users = action.payload.users;
-        state.loading = false;
+        state.usersCount = action.payload.usersCount;
+        state.chasingUsers = _.orderBy(action.payload.users, "numOfOrders", "desc").slice(0, 3)
+        state.loadingUsers = false;
       })
       .addCase(getAllUsers.rejected, (state, action) => {
-        state.loading = false;
+        state.loadingUsers = false;
         state.error = action.payload;
       })
       .addCase(deleteUser.pending, (state, action) => {
-        state.loading = true;
+        state.loadingUsers = true;
         state.deletionInProcess = true;
       })
       .addCase(deleteUser.fulfilled, (state, action) => {
         state.users = state.users.filter(
           (user) => user._id !== action.payload.user._id
         );
-        state.loading = false;
+        state.loadingUsers = false;
         state.deletionInProcess = false;
         state.deletedUser = action.payload.user;
         state.deletionError = null;
       })
       .addCase(deleteUser.rejected, (state, action) => {
-        state.loading = false;
+        state.loadingUsers = false;
         state.deletionInProcess = false;
         state.deletionError = action.payload;
       })
-      .addCase(updateUser.pending, (state, action) => {
-        state.updationInProcess = true;
+      .addCase(getUserOrders.pending, (state, action) => {
+        state.loadingOrders = true;
       })
-      .addCase(updateUser.fulfilled, (state, action) => {
-        state.updatedUser = action.payload.user;
-        state.updationInProcess = false;
-        state.updationError = null;
+      .addCase(getUserOrders.fulfilled, (state, action) => {
+        state.orders = action.payload.myOrders;
+        state.loadingOrders = false;
+        state.errorOrders = null;
       })
-      .addCase(updateUser.rejected, (state, action) => {
-        state.updationInProcess = false;
-        state.updationError = action.payload;
-      })
-      .addCase(getOrdersAndReviews.pending, (state, action) => {
-        state.loadingOrdersAndReviews = true;
-      })
-      .addCase(getOrdersAndReviews.fulfilled, (state, action) => {
-        state.orders = action.payload.orders;
-        state.reviews = action.payload.products;
-        state.loadingOrdersAndReviews = false;
-        state.errorOrdersAndReviews = null;
-      })
-      .addCase(getOrdersAndReviews.rejected, (state, action) => {
-        state.loadingOrdersAndReviews = false;
-        state.errorOrdersAndReviews = action.payload;
+      .addCase(getUserOrders.rejected, (state, action) => {
+        state.loadingOrders = false;
+        state.errorOrders = action.payload;
       });
   },
 });

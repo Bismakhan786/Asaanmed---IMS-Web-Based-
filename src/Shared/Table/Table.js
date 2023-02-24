@@ -127,48 +127,66 @@ const Table = ({
                 </tr>
               </thead>
               <tbody>
-                {rows.map((row, index) => (
-                  <>
-                    <tr key={index}>
-                      <td style={{ textAlign: "center" }}>
-                        <input
-                          type={"checkbox"}
-                          name={"ck"}
-                          onClick={selectUnselect(row.id)}
-                          id={row.id}
-                        />
-                      </td>
-                      {keys.map((item, index) => (
-                        <td key={index}>{row[item]}</td>
-                      ))}
-                      <td style={{ width: "5%" }}>
-                        <div>
-                          <Link
-                            to={`/admin/${onEdit}/details/${row.id}`}
-                            state={detailedData.filter((d) => d._id === row.id)}
-                          >
-                            <EditIcon sx={{ fontSize: 17 }} />
-                          </Link>
-                          <button onClick={handleDltClick(row.id)}>
-                            <DeleteIcon sx={{ fontSize: 17 }} />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                    {showWarning === row.id ? (
-                      <tr className="hidden-row" key={index + "warning"}>
-                        <td colSpan={1 + 1 + keys.length}>
-                          <div className="hidden-row-content">
-                            <span>
-                              {deleteWarning} {row.name || row.id}
-                            </span>
-                            <button onClick={deleteFunc(row.id)}>Delete</button>
+                {rows.length > 0 ? (
+                  rows.map((row, index) => (
+                    <>
+                      <tr key={index}>
+                        <td style={{ textAlign: "center" }}>
+                          <input
+                            type={"checkbox"}
+                            name={"ck"}
+                            onClick={selectUnselect(row.id)}
+                            id={row.id}
+                          />
+                        </td>
+                        {keys.map((item, index) => (
+                          <td key={index}>{row[item]}</td>
+                        ))}
+                        <td style={{ width: "5%" }}>
+                          <div>
+                            <Link
+                              to={`/admin/${onEdit}/details/${row.id}`}
+                              state={detailedData.filter(
+                                (d) => d._id === row.id
+                              )}
+                            >
+                              <EditIcon sx={{ fontSize: 17 }} />
+                            </Link>
+                            <button onClick={handleDltClick(row.id)}>
+                              <DeleteIcon sx={{ fontSize: 17 }} />
+                            </button>
                           </div>
                         </td>
                       </tr>
-                    ) : null}
-                  </>
-                ))}
+                      {showWarning === row.id ? (
+                        <tr className="hidden-row" key={index + "warning"}>
+                          <td colSpan={1 + 1 + keys.length}>
+                            <div className="hidden-row-content">
+                              <span>
+                                {deleteWarning} {row.name || row.id}
+                              </span>
+                              <button onClick={deleteFunc(row.id)}>
+                                Delete
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ) : null}
+                    </>
+                  ))
+                ) : (
+
+                  // Empty table component in case if there are no rows
+                  <tr>
+                    <td colSpan={1 + 1 + columns.length}>
+                      <div className="table-empty-container">
+                        <div>
+                          <p>No products. Add one now</p>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>

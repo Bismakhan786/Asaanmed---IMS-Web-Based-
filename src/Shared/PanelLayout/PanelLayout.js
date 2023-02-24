@@ -26,8 +26,6 @@ const actions = [
   { icon: <CategoriesIcon />, name: "Categories", route: "/admin/categories" },
   { icon: <ListAltIcon />, name: "Orders", route: "/admin/orders" },
   { icon: <PeopleIcon />, name: "Users", route: "/admin/users" },
-  { icon: <DiscountIcon />, name: "Vouchers", route: "/admin/vouchers" },
-  { icon: <ExpensesIcon />, name: "Expenses", route: "/admin/expenses" },
   { icon: <MdPersonOutline />, name: "Profile", route: "/admin/profile" },
   { icon: <LogoutRounded />, name: "Logout" },
 ];
@@ -40,9 +38,19 @@ const PanelLayout = ({ MainLayout, PanelName, ShowProfileIcon = true }) => {
   const dispatch = useDispatch();
 
   return (
+    
     <div className="panel">
+      
       <Sidebar />
+      <div className="mobile-text">
+        <div style={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
+        <img src={logo} className="logo" />
+
+        </div>
+        <p style={{textAlign: 'center'}}>Open in Laptop or PC for best user experience..</p>
+      </div>
       <div className="panel-container">
+        
         <div>
           <Typography component={"h1"}>{PanelName}</Typography>
           <img
@@ -88,6 +96,7 @@ const PanelLayout = ({ MainLayout, PanelName, ShowProfileIcon = true }) => {
             </div>
           )}
         </div>
+         
         {MainLayout}
       </div>
     </div>

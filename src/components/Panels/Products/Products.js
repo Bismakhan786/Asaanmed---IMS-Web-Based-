@@ -6,6 +6,7 @@ import {
   getProductsFromAPI,
 } from "../../../Redux/slices/ProductsSlice";
 
+import ImportExportIcon from "@mui/icons-material/Publish";
 import Table from "../../../Shared/Table/Table";
 import PanelLayout from "../../../Shared/PanelLayout/PanelLayout";
 import { toast } from "react-toastify";
@@ -31,14 +32,13 @@ const Products = () => {
   const columns = [
     "ID",
     "Name",
+    "Code",
+    "Offer",
+    "Price",
     "Category",
     "Status",
     "Stock",
-    "Price",
-    "Discount",
     "Rate",
-    "Rating",
-    "Reviews",
   ];
   const rows = [];
 
@@ -48,14 +48,13 @@ const Products = () => {
       rows.push({
         id: product._id,
         name: product.name,
+        code: product.code,
+        offer: product.offer,
+        price: product.price,
         category: product.cat.name,
         status: product.status,
         stock: product.stock,
-        price: product.price,
-        discount: product.disc,
-        afterDiscount: product.price - product.price * product.disc,
-        rating: product.ratings,
-        reviews: product.numOfReviews,
+        afterDiscount: product.price - product.price * product.offer,
       });
       detailedData.push(product);
     });
@@ -88,6 +87,16 @@ const Products = () => {
               autoClose: 5000,
             })}
           <CustomToast />
+          <div className={"import-export-btns"}>
+            <button>
+              Import{" "}
+              <ImportExportIcon style={{ transform: "rotate(180deg)" }} />
+            </button>
+            <button>Export 
+            <ImportExportIcon />
+
+            </button>
+          </div>
           <Table
             columns={columns}
             rows={rows}

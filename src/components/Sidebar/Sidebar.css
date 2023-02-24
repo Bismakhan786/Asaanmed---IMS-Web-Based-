@@ -1,11 +1,11 @@
 .sidebar{
     background-color: rgb(60, 60, 60);
-    padding: 1rem 1rem;
+    padding: 1em 1em;
     display: flex;
     flex-direction: column;
     overflow-y: hidden;
-    width: fit-content;
-    min-width: fit-content;
+    /* width: fit-content; */
+    /* min-width: fit-content; */
 }
 
 .sidebar > a:first-child{
@@ -29,7 +29,7 @@
     text-decoration: none;
     color: rgb(238, 238, 238, 0.5);
     transition: all 0.5s;
-    padding: 0.1rem 0.4rem;
+    padding: 5px;
     font-size: 0.8rem;
 }
 
@@ -71,7 +71,7 @@
     font-size: 0.8rem !important;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 600px) {
     .sidebar{
         display: none;
     }

@@ -5,7 +5,12 @@ export const getAllOrders = createAsyncThunk(
   "orders",
   async (arg, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/admin/orders`);
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/admin/orders`,
+        {
+          withCredentials: true,
+        }
+      );
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data.message);
@@ -49,7 +54,7 @@ export const deleteOrder = createAsyncThunk(
 );
 
 const initialState = {
-  loading: false,
+  loadingOrders: false,
   deletionInProcess: false,
   updationInProcess: false,
   orders: [],
@@ -69,33 +74,33 @@ const OrdersSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getAllOrders.pending, (state, action) => {
-        state.loading = true;
+        state.loadingOrders = true;
       })
       .addCase(getAllOrders.fulfilled, (state, action) => {
         state.orders = action.payload.orders;
         state.ordersCount = action.payload.ordersCount;
         state.totalAmount = action.payload.totalAmount;
-        state.loading = false;
+        state.loadingOrders = false;
       })
       .addCase(getAllOrders.rejected, (state, action) => {
-        state.loading = false;
+        state.loadingOrders = false;
         state.error = action.payload;
       })
       .addCase(deleteOrder.pending, (state, action) => {
-        state.loading = true;
+        state.loadingOrders = true;
         state.deletionInProcess = true;
       })
       .addCase(deleteOrder.fulfilled, (state, action) => {
         state.orders = state.orders.filter(
           (order) => order._id !== action.payload.order._id
         );
-        state.loading = false;
+        state.loadingOrders = false;
         state.deletionInProcess = false;
         state.deletedOrder = action.payload.order
         state.deletionError = null
       })
       .addCase(deleteOrder.rejected, (state, action) => {
-        state.loading = false;
+        state.loadingOrders = false;
         state.deletionInProcess = false
         state.deletionError = action.payload;
       })

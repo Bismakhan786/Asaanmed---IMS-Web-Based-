@@ -5,14 +5,26 @@
   background-color: white;
 }
 
+.table-empty-container{
+  /* height: 100vh; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .table-overflow {
   overflow-x: scroll;
+
+  /* width: 100%; */
+
 }
 
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
   border: 1px solid rgba(0, 0, 0, 0.05);
+  width: 100%;
+
 }
 
 table input[type="checkbox"] {
@@ -22,6 +34,11 @@ table input[type="checkbox"] {
   height: 12px;
   margin: auto;
   accent-color: #e37e38;
+}
+
+thead{
+  position: sticky;
+  top: 0;
 }
 
 thead input[type="checkbox"] {
