@@ -21,6 +21,7 @@ const Orders = () => {
     "Status",
     "Shipping",
     "Bill",
+    "Date"
   ];
   const rows = [];
   const detailedData = [];
@@ -34,6 +35,7 @@ const Orders = () => {
         status: order.orderStatus,
         shipping: order.shippingPrice,
         bill: order.totalPrice,
+        date: order.createdAt?.slice(0,10)
       });
       detailedData.push(order);
     });
@@ -47,7 +49,7 @@ const Orders = () => {
       MainLayout={
         <Table
           columns={columns}
-          rows={rows}
+          rows={rows.reverse()}
           loading={loading}
           detailedData={detailedData}
           onEdit={"orders"}

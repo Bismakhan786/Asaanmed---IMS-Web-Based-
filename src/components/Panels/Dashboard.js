@@ -35,7 +35,7 @@ import {
 } from "chart.js";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../Shared/Loader/Loading";
-import _ from "lodash";
+import _, { find } from "lodash";
 
 ChartJS.register(
   ArcElement,
@@ -51,6 +51,14 @@ ChartJS.register(
   Filler
 );
 
+function getPercentageIncrease(current, prior) {
+  let percent = ((current - prior) / prior) * 100;
+  if (percent === Infinity) {
+    return 100;
+  }
+  return percent;
+}
+
 function Dashboard() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -58,6 +66,17 @@ function Dashboard() {
     dispatch(getProductsFromAPI());
     dispatch(getAllUsers());
   }, [dispatch]);
+
+  let currentMonth = new Date().getMonth();
+  let prevMonth = new Date().getMonth() === 0 ? 11 : new Date().getMonth() - 1;
+  let currentYear = new Date().getFullYear();
+  let prevYear = new Date().getFullYear() - 1;
+  let currentMonthOrders = 0;
+  let prevMonthOrders = 0;
+  let currentMonthProducts = 0;
+  let prevMonthProducts = 0;
+  let currentMonthUsers = 0;
+  let prevMonthUsers = 0;
 
   const { totalAmount, ordersCount, loadingOrders, orders } = useSelector(
     (state) => state.orders
@@ -69,7 +88,266 @@ function Dashboard() {
     (state) => state.users
   );
 
-  const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
+  const plugins = [
+    {
+      afterDraw: function (chart) {
+        // console.log(chart);
+        if (chart.data.datasets[0].data.length < 1) {
+          let ctx = chart.ctx;
+          let width = chart.width;
+          let height = chart.height;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillStyle = "rgba(0, 0, 0, 0.5)"
+          ctx.font = "1em Arial";
+          ctx.fillText("No data to display..", width / 2, height / 2);
+          ctx.restore();
+        }
+      },
+    },
+  ];
+
+  const salesLabels = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "July",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  let userChartData = [];
+  let usersData = [];
+  users &&
+    users.map((u, i) => {
+      usersData.push({
+        user: u,
+        year: new Date(u.createdAt.slice(0, 10)).toLocaleString("default", {
+          year: "numeric",
+        }),
+        month: new Date(u.createdAt.slice(0, 10)).toLocaleString("default", {
+          month: "short",
+        }),
+      });
+    });
+
+  usersData = _.groupBy(usersData, "year");
+
+  let monthlyUsersData = [];
+
+  Object.keys(usersData).map((year, i) => {
+    monthlyUsersData.push({
+      year: year,
+      users: _.groupBy(usersData[year], "month"),
+    });
+  });
+
+  let finalUsersData = [];
+
+  monthlyUsersData?.map((item, i) => {
+    Object.keys(item.users).map((m, i2) => {
+      finalUsersData.push({
+        year: monthlyUsersData[i].year,
+        month: m,
+        totalUsers: monthlyUsersData[i].users[m].length,
+      });
+    });
+  });
+
+  finalUsersData = _.groupBy(finalUsersData, "year");
+
+  currentMonthUsers =
+    finalUsersData[currentYear]?.find(
+      (u) => u.month === salesLabels[currentMonth]
+    ) === undefined
+      ? 0
+      : finalUsersData[currentYear]?.find(
+          (u) => u.month === salesLabels[currentMonth]
+        ).totalUsers;
+  prevMonthUsers =
+    finalUsersData[currentYear]?.find(
+      (u) => u.month === salesLabels[prevMonth]
+    ) === undefined
+      ? 0
+      : finalUsersData[currentYear]?.find(
+          (u) => u.month === salesLabels[prevMonth]
+        ).totalUsers;
+
+  finalUsersData &&
+    salesLabels.map((m, i) => {
+      finalUsersData[currentYear]?.map((m2, i2) => {
+        if (m === m2.month) {
+          userChartData.push(finalUsersData[currentYear][i2].totalUsers);
+        } else {
+          userChartData.push(0);
+        }
+      });
+    });
+
+  let productsData = [];
+  products &&
+    products.map((p, i) => {
+      productsData.push({
+        product: p,
+        year: new Date(p.createdAt.slice(0, 10)).toLocaleString("default", {
+          year: "numeric",
+        }),
+        month: new Date(p.createdAt.slice(0, 10)).toLocaleString("default", {
+          month: "short",
+        }),
+      });
+    });
+
+  productsData = _.groupBy(productsData, "year");
+
+  let monthlyProductsData = [];
+
+  Object.keys(productsData).map((year, i) => {
+    monthlyProductsData.push({
+      year: year,
+      products: _.groupBy(productsData[year], "month"),
+    });
+  });
+
+  let finalProductsData = [];
+
+  monthlyProductsData?.map((item, i) => {
+    Object.keys(item.products).map((m, i2) => {
+      finalProductsData.push({
+        year: monthlyProductsData[i].year,
+        month: m,
+        totalProducts: monthlyProductsData[i].products[m].length,
+      });
+    });
+  });
+
+  finalProductsData = _.groupBy(finalProductsData, "year");
+
+  currentMonthProducts =
+    finalProductsData[currentYear]?.find(
+      (p) => p.month === salesLabels[currentMonth]
+    ) === undefined
+      ? 0
+      : finalProductsData[currentYear]?.find(
+          (p) => p.month === salesLabels[currentMonth]
+        ).totalProducts;
+  prevMonthProducts =
+    finalProductsData[currentYear]?.find(
+      (p) => p.month === salesLabels[prevMonth]
+    ) === undefined
+      ? 0
+      : finalProductsData[currentYear]?.find(
+          (p) => p.month === salesLabels[prevMonth]
+        ).totalProducts;
+
+  let yearlyOrders = [];
+
+  orders &&
+    orders.map((o, i) => {
+      yearlyOrders.push({
+        order: o,
+        year: new Date(o.createdAt.slice(0, 10)).toLocaleString("default", {
+          year: "numeric",
+        }),
+        month: new Date(o.createdAt.slice(0, 10)).toLocaleString("default", {
+          month: "short",
+        }),
+      });
+    });
+
+  let yearlyData = yearlyOrders ? _.groupBy(yearlyOrders, "year") : {};
+
+  let monthlyOrdersData = [];
+
+  Object.keys(yearlyData).map((year, i) => {
+    monthlyOrdersData.push({
+      year: year,
+      orders: _.groupBy(yearlyData[year], "month"),
+    });
+  });
+
+  let finalMonthlyData = [];
+
+  monthlyOrdersData?.map((item, i) => {
+    Object.keys(item.orders).map((m, i2) => {
+      let monthlySum = 0;
+      monthlyOrdersData[i].orders[m].map((o, i3) => {
+        monthlySum += o.order.totalPrice;
+      });
+      finalMonthlyData.push({
+        year: monthlyOrdersData[i].year,
+        month: m,
+        total: monthlySum,
+        totalOrders: monthlyOrdersData[i].orders[m].length,
+      });
+    });
+  });
+
+  let salesData = [];
+  let ordersCountData = [];
+
+  finalMonthlyData = _.groupBy(finalMonthlyData, "year");
+
+  currentMonthOrders =
+    finalMonthlyData[currentYear]?.find(
+      (o) => o.month === salesLabels[currentMonth]
+    ) === undefined
+      ? 0
+      : finalMonthlyData[currentYear]?.find(
+          (o) => o.month === salesLabels[currentMonth]
+        ).totalOrders;
+  prevMonthOrders =
+    finalMonthlyData[currentYear]?.find(
+      (o) => o.month === salesLabels[prevMonth]
+    ) === undefined
+      ? 0
+      : finalMonthlyData[currentYear]?.find(
+          (o) => o.month === salesLabels[prevMonth]
+        ).totalOrders;
+
+  finalMonthlyData &&
+    salesLabels.map((m, i) => {
+      finalMonthlyData[currentYear]?.map((m2, i2) => {
+        if (m === m2.month) {
+          ordersCountData.push(finalMonthlyData[currentYear][i2].totalOrders);
+          salesData.push(finalMonthlyData[currentYear][i2].total);
+        } else {
+          ordersCountData.push(0);
+          salesData.push(0);
+        }
+      });
+    });
+
+  const optionSales = {
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: true,
+        text: "Sales",
+      },
+    },
+    responsive: true,
+  };
+
+  const sales = {
+    labels: salesLabels,
+    datasets: [
+      {
+        label: "Sale",
+        data: salesData,
+        backgroundColor: "rgba(53, 162, 235, 0.5)",
+        hoverBackgroundColor: "rgb(53, 162, 235)",
+      },
+    ],
+  };
 
   const optionsUsersAndOrders = {
     responsive: true,
@@ -80,7 +358,7 @@ function Dashboard() {
     stacked: false,
     plugins: {
       legend: {
-        display: false,
+        display: true,
       },
       title: {
         display: true,
@@ -105,12 +383,12 @@ function Dashboard() {
   };
 
   const usersAndOrders = {
-    labels,
+    labels: salesLabels,
     datasets: [
       {
         label: "# of Users",
         // lineTension: 0.5,
-        data: [5, 10, 30, 15, 80, 90],
+        data: userChartData,
         borderColor: "#e37e38",
         backgroundColor: "#e37e38",
         yAxisID: "y",
@@ -118,35 +396,10 @@ function Dashboard() {
       {
         label: "# of Orders",
         // lineTension: 0.5,
-        data: [0, 30, 10, 80, 200, 300],
+        data: ordersCountData,
         borderColor: "#67b8e3",
         backgroundColor: "#67b8e3",
         yAxisID: "y1",
-      },
-    ],
-  };
-
-  const optionSales = {
-    plugins: {
-      legend: {
-        display: false,
-      },
-      title: {
-        display: true,
-        text: "Sales",
-      },
-    },
-    responsive: true,
-  };
-
-  const sales = {
-    labels,
-    datasets: [
-      {
-        label: "Sale",
-        data: [1000, 2000, 3000, 1000, 5000, 9000],
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
-        hoverBackgroundColor: "rgb(53, 162, 235)",
       },
     ],
   };
@@ -234,6 +487,15 @@ function Dashboard() {
     ],
   };
 
+  console.log("SALES DATA");
+  console.log(salesData);
+  console.log("FINAL PRODUCTS DATA");
+  console.log(finalProductsData);
+  console.log("FINAL USERS DATA");
+  console.log(finalUsersData);
+  console.log("FINAL ORDERS DATA");
+  console.log(finalMonthlyData);
+
   return (
     <PanelLayout
       PanelName={"Dashboard"}
@@ -254,8 +516,14 @@ function Dashboard() {
                       {totalAmount ? totalAmount.toLocaleString() : 0}
                     </p>
                     <p>
-                      <MovingIcon /> 17%
-                      <p className="timeline">Since last week</p>{" "}
+                      <MovingIcon />{" "}
+                      {salesData.length > 0
+                        ? getPercentageIncrease(
+                            salesData[currentMonth],
+                            salesData[prevMonth]
+                          )
+                        : 0}
+                      %<p className="timeline">Since last month</p>{" "}
                     </p>
                   </div>
                   <div>
@@ -266,8 +534,14 @@ function Dashboard() {
                       {ordersCount ? ordersCount.toLocaleString() : 0}
                     </p>
                     <p>
-                      <MovingIcon /> 17%
-                      <p className="timeline">Since last week</p>{" "}
+                      <MovingIcon />{" "}
+                      {Object.keys(finalMonthlyData).length > 0
+                        ? getPercentageIncrease(
+                            currentMonthOrders,
+                            prevMonthOrders
+                          )
+                        : 0}
+                      %<p className="timeline">Since last month</p>{" "}
                     </p>
                   </div>
                   <div>
@@ -278,8 +552,14 @@ function Dashboard() {
                       {productsCount ? productsCount.toLocaleString() : 0}
                     </p>
                     <p>
-                      <MovingIcon /> 17%
-                      <p className="timeline">Since last week</p>{" "}
+                      <MovingIcon />
+                      {Object.keys(finalProductsData).length > 0
+                        ? getPercentageIncrease(
+                            currentMonthProducts,
+                            prevMonthProducts
+                          )
+                        : 0}
+                      %<p className="timeline">Since last month</p>{" "}
                     </p>
                   </div>
                   <div>
@@ -290,29 +570,36 @@ function Dashboard() {
                       {usersCount ? usersCount.toLocaleString() : 0}
                     </p>
                     <p>
-                      <MovingIcon /> 17%
-                      <p className="timeline">Since last week</p>{" "}
+                      <MovingIcon />
+                      {Object.keys(finalUsersData).length > 0
+                        ? getPercentageIncrease(
+                            currentMonthUsers,
+                            prevMonthUsers
+                          )
+                        : 0}
+                      %<p className="timeline">Since last month</p>{" "}
                     </p>
                   </div>
                 </div>
 
                 <div className="charts">
                   <div className="line">
-                    <Bar data={sales} options={optionSales} />
+                    <Bar data={sales} options={optionSales} plugins={plugins}/>
                   </div>
                   <div className="line">
                     <Line
                       data={usersAndOrders}
                       options={optionsUsersAndOrders}
+                      plugins={plugins}
                     />
                   </div>
                 </div>
                 <div className="charts">
                   <div className="doughnut">
-                    <Doughnut data={ordersData} options={ordersOptions} />
+                    <Doughnut data={ordersData} options={ordersOptions} plugins={plugins}/>
                   </div>
                   <div className="bar">
-                    <Bar data={top5products} options={optionstop5products} />
+                    <Bar data={top5products} options={optionstop5products} plugins={plugins}/>
                   </div>
                 </div>
 
@@ -336,7 +623,6 @@ function Dashboard() {
                       </p>
                     </div>
                   )}
-                  
                 </div>
                 <div className="charts mobile-charts">
                   <div className="doughnut mob-doughnut">
