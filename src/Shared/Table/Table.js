@@ -12,6 +12,9 @@ const Table = ({
   onEdit,
   deleteFunc,
   loading,
+  selectItemsDisable=false,
+  selectedItems,
+  emptyTableText="No data!",
   deleteWarning = "Confirm Delete?",
   bulkActions = (
     <button className="bulk-action-button">
@@ -21,7 +24,7 @@ const Table = ({
 }) => {
   const [selected, setSelected] = useState(0);
   const [showWarning, setShowWarning] = useState(null);
-  const selectedItems = useRef([]);
+  // const selectedItems = useRef([]);
 
   let keys = [];
 
@@ -97,9 +100,9 @@ const Table = ({
         <Loading />
       ) : (
         <>
-          {selected > 0 ? (
+          {selectedItems.current.length > 0 ? (
             <div className="table-footer">
-              <p>Selected: {selected} </p>
+              <p>Selected: {selectedItems.current.length} </p>
               <div>
                 {bulkActions}
                 {/* <button>
@@ -113,13 +116,13 @@ const Table = ({
             <table>
               <thead>
                 <tr>
-                  <th style={{ width: "5%", textAlign: "center" }}>
+                  {!selectItemsDisable && <th style={{ width: "5%", textAlign: "center" }}>
                     <input
                       type={"checkbox"}
                       onClick={selectOrUnselectAll}
                       id={"parent-ck"}
                     />
-                  </th>
+                  </th>}
                   {columns.map((value, index) => (
                     <th key={index}>{value}</th>
                   ))}
@@ -131,14 +134,14 @@ const Table = ({
                   rows.map((row, index) => (
                     <>
                       <tr key={index}>
-                        <td style={{ textAlign: "center" }}>
+                        {!selectItemsDisable && <td style={{ textAlign: "center" }}>
                           <input
                             type={"checkbox"}
                             name={"ck"}
                             onClick={selectUnselect(row.id)}
                             id={row.id}
                           />
-                        </td>
+                        </td>}
                         {keys.map((item, index) => (
                           <td key={index}>{row[item]}</td>
                         ))}
@@ -181,7 +184,7 @@ const Table = ({
                     <td colSpan={1 + 1 + columns.length}>
                       <div className="table-empty-container">
                         <div>
-                          <p>No products. Add one now</p>
+                          <p>{emptyTableText}</p>
                         </div>
                       </div>
                     </td>

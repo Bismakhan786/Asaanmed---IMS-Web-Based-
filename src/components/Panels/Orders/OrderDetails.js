@@ -79,8 +79,8 @@ const OrderDetails = () => {
       step: 0,
     },
     {
-      value: "On the way",
-      label: "On the way",
+      value: "Shipped",
+      label: "Shipped",
       step: 1,
     },
     {
@@ -97,7 +97,7 @@ const OrderDetails = () => {
 
   const steps = [
     "Processing",
-    "On the way",
+    "Shipped",
     status === "Cancelled" ? "Cancelled" : "Delivered",
   ];
 
@@ -297,13 +297,6 @@ const OrderDetails = () => {
                 </table>
               </div>
             </div>
-            {/* <div className="voucher-details">
-              <p>Voucher Details</p>
-              <div>
-                <span>Voucher:</span>
-                <span>{voucher ? voucher : "No voucher applied"}</span>
-              </div>
-            </div> */}
             <div>
               <p>Shipping Details</p>
               <div className="shipping-details">

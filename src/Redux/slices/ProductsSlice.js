@@ -33,6 +33,76 @@ export const deleteProduct = createAsyncThunk(
   }
 );
 
+export const deleteManyProducts = createAsyncThunk(
+  "products/delete/many",
+  async (productids, { rejectWithValue }) => {
+    try {
+      console.log(productids);
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_URL}/admin/products/delete/many`,
+        { productids },
+        { withCredentials: true }
+      );
+      console.log(response.data);
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const updateStatusOfManyProducts = createAsyncThunk(
+  "products/update/status",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_URL}/admin/products/update/status`,
+        data,
+        { withCredentials: true }
+      );
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const updateStockOfManyProducts = createAsyncThunk(
+  "products/update/stock",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_URL}/admin/products/update/stock`,
+        data,
+        { withCredentials: true }
+      );
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const updateCategoryOfManyProducts = createAsyncThunk(
+  "products/update/category",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_URL}/admin/products/update/category`,
+        data,
+        { withCredentials: true }
+      );
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
 export const addProduct = createAsyncThunk(
   "products/create",
   async (productData, { rejectWithValue }) => {
@@ -72,18 +142,27 @@ const initialState = {
   loadingProducts: false,
   creationInProcess: false,
   deletionInProcess: false,
+  deleteManyInProcess: false,
   updationInProcess: false,
+  updateStockInProcess: false,
+  updateStatusInProcess: false,
+  updateCategoryInProcess: false,
   products: [],
+  deletedCount: null,
+  updatedCount: null,
   productsCount: null,
   mostSellingProducts: [],
   selectedProducts: [],
   updatedProduct: null,
-  deletedProduct: null,
   selectFlag: false,
   error: null,
   creationError: null,
   deletionError: null,
+  deleteManyError: null,
   updationError: null,
+  updateStockError: null,
+  updateStatusError: null,
+  updateCategoryError: null,
 };
 
 const ProductsSlice = createSlice({
@@ -114,7 +193,11 @@ const ProductsSlice = createSlice({
       .addCase(getProductsFromAPI.fulfilled, (state, action) => {
         state.products = action.payload.products;
         state.productsCount = action.payload.productCount;
-        state.mostSellingProducts = _.orderBy(action.payload.products, "numOfOrders", "desc").slice(0, 5)
+        state.mostSellingProducts = _.orderBy(
+          action.payload.products,
+          "numOfOrders",
+          "desc"
+        ).slice(0, 5);
         state.loadingProducts = false;
       })
       .addCase(getProductsFromAPI.rejected, (state, action) => {
@@ -126,18 +209,33 @@ const ProductsSlice = createSlice({
         state.deletionInProcess = true;
       })
       .addCase(deleteProduct.fulfilled, (state, action) => {
-        state.products = state.products.filter(
-          (product) => product._id !== action.payload.product._id
-        );
+        state.products = action.payload.products;
+        state.productsCount = action.payload.productCount;
         state.loadingProducts = false;
         state.deletionInProcess = false;
         state.deletionError = null;
-        state.deletedProduct = action.payload.product;
       })
       .addCase(deleteProduct.rejected, (state, action) => {
         state.loadingProducts = false;
         state.deletionInProcess = false;
         state.deletionError = action.payload;
+      })
+      .addCase(deleteManyProducts.pending, (state, action) => {
+        state.loadingProducts = true;
+        state.deleteManyInProcess = true;
+      })
+      .addCase(deleteManyProducts.fulfilled, (state, action) => {
+        state.products = action.payload.products;
+        state.productsCount = action.payload.productCount;
+        state.deletedCount = action.payload.deletedCount;
+        state.loadingProducts = false;
+        state.deleteManyInProcess = false;
+        state.deleteManyError = null;
+      })
+      .addCase(deleteManyProducts.rejected, (state, action) => {
+        state.loadingProducts = false;
+        state.deleteManyInProcess = false;
+        state.deleteManyError = action.payload;
       })
       .addCase(addProduct.pending, (state, action) => {
         state.creationInProcess = true;
@@ -162,6 +260,57 @@ const ProductsSlice = createSlice({
       .addCase(updateProduct.rejected, (state, action) => {
         state.updationInProcess = false;
         state.updationError = action.payload;
+      })
+      .addCase(updateStatusOfManyProducts.pending, (state, action) => {
+        state.loadingProducts = true;
+        state.updateStatusInProcess = true;
+      })
+      .addCase(updateStatusOfManyProducts.fulfilled, (state, action) => {
+        state.products = action.payload.products;
+        state.productsCount = action.payload.productCount;
+        state.updatedCount = action.payload.updatedCount;
+        state.loadingProducts = false;
+        state.updateStatusInProcess = false;
+        state.updateStatusError = null;
+      })
+      .addCase(updateStatusOfManyProducts.rejected, (state, action) => {
+        state.loadingProducts = false;
+        state.updateStatusInProcess = false;
+        state.updateStatusError = action.payload;
+      })
+      .addCase(updateStockOfManyProducts.pending, (state, action) => {
+        state.loadingProducts = true;
+        state.updateStockInProcess = true;
+      })
+      .addCase(updateStockOfManyProducts.fulfilled, (state, action) => {
+        state.products = action.payload.products;
+        state.productsCount = action.payload.productCount;
+        state.updatedCount = action.payload.updatedCount;
+        state.loadingProducts = false;
+        state.updateStockInProcess = false;
+        state.updateStockError = null;
+      })
+      .addCase(updateStockOfManyProducts.rejected, (state, action) => {
+        state.loadingProducts = false;
+        state.updateStockInProcess = false;
+        state.updateStockError = action.payload;
+      })
+      .addCase(updateCategoryOfManyProducts.pending, (state, action) => {
+        state.loadingProducts = true;
+        state.updateCategoryInProcess = true;
+      })
+      .addCase(updateCategoryOfManyProducts.fulfilled, (state, action) => {
+        state.products = action.payload.products;
+        state.productsCount = action.payload.productCount;
+        state.updatedCount = action.payload.updatedCount;
+        state.loadingProducts = false;
+        state.updateCategoryInProcess = false;
+        state.updateCategoryError = null;
+      })
+      .addCase(updateCategoryOfManyProducts.rejected, (state, action) => {
+        state.loadingProducts = false;
+        state.updateCategoryInProcess = false;
+        state.updateCategoryError = action.payload;
       });
   },
 });

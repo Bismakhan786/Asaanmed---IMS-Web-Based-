@@ -25,6 +25,7 @@
     "react-helmet": "^6.1.0",
     "react-icons": "^4.4.0",
     "react-material-ui-carousel": "^3.4.2",
+    "react-modal": "^3.16.1",
     "react-notify": "^3.0.0",
     "react-redux": "^8.0.4",
     "react-router-dom": "^6.4.2",

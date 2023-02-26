@@ -85,14 +85,14 @@ const CreateCategory = () => {
               render: "Created Successfully!",
               type: toast.TYPE.SUCCESS,
               icon: <SuccessIcon className="successIcon" />,
-              autoClose: 5000,
+              autoClose: 3000,
             })}
           {creationError &&
             toast.update(toastId.current, {
               render: creationError,
               type: toast.TYPE.ERROR,
               icon: <ErrorIcon className="errorIcon" />,
-              autoClose: 5000,
+              autoClose: 3000,
             })}
           <CustomToast />
           <div className="cat-form-container">

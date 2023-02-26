@@ -5,7 +5,9 @@ export const getAllCategories = createAsyncThunk(
   "categories/get",
   async (arg, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/admin/categories`);
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/admin/categories`
+      );
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data.message);
@@ -13,16 +15,14 @@ export const getAllCategories = createAsyncThunk(
   }
 );
 
-
 export const addCategory = createAsyncThunk(
   "categories/create",
   async (categoryData, { rejectWithValue }) => {
     try {
-      
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/admin/categories/new/create`,
         categoryData,
-        {withCredentials: true}
+        { withCredentials: true }
       );
 
       return response.data;
@@ -39,6 +39,23 @@ export const updateCategory = createAsyncThunk(
       const response = await axios.put(
         `${process.env.REACT_APP_API_URL}/admin/categories/${id}`,
         newData,
+        { withCredentials: true }
+      );
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const deleteManyCategories = createAsyncThunk(
+  "categories/delete/many",
+  async (categoryids, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_URL}/admin/categories/delete/many`,
+        { categoryids },
         { withCredentials: true }
       );
 
@@ -70,14 +87,17 @@ const initialState = {
   loading: false,
   creationInProcess: false,
   deletionInProcess: false,
+  deleteManyInProcess: false,
   updationInProcess: false,
   categories: [],
-  deletedCategory: null,
+  deletedCount: null,
+  deletedProductsCount: null,
   updatedCategory: null,
   error: null,
   creationError: null,
   updationError: null,
   deletionError: null,
+  deleteManyError: null,
 };
 
 const CategoriesSlice = createSlice({
@@ -102,18 +122,32 @@ const CategoriesSlice = createSlice({
         state.deletionInProcess = true;
       })
       .addCase(deleteCategory.fulfilled, (state, action) => {
-        state.categories = state.categories.filter(
-          (category) => category._id !== action.payload.category._id
-        );
+        state.categories = action.payload.categories;
+        state.deletedProductsCount = action.payload.deletedProducts;
         state.loading = false;
         state.deletionInProcess = false;
-        state.deletedCategory = action.payload.category
-        state.deletionError = null
+        state.deletionError = null;
       })
       .addCase(deleteCategory.rejected, (state, action) => {
         state.loading = false;
-        state.deletionInProcess = false
+        state.deletionInProcess = false;
         state.deletionError = action.payload;
+      })
+      .addCase(deleteManyCategories.pending, (state, action) => {
+        state.loading = true;
+        state.deleteManyInProcess = true;
+      })
+      .addCase(deleteManyCategories.fulfilled, (state, action) => {
+        state.categories = action.payload.categories;
+        state.deletedCount = action.payload.deletedCount;
+        state.loading = false;
+        state.deleteManyInProcess = false;
+        state.deleteManyError = null;
+      })
+      .addCase(deleteManyCategories.rejected, (state, action) => {
+        state.loading = false;
+        state.deleteManyInProcess = false;
+        state.deleteManyError = action.payload;
       })
       .addCase(addCategory.pending, (state, action) => {
         state.creationInProcess = true;
@@ -141,6 +175,5 @@ const CategoriesSlice = createSlice({
       });
   },
 });
-
 
 export default CategoriesSlice.reducer;

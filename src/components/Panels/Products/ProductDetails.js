@@ -105,22 +105,20 @@ const ProductDetails = () => {
   const data = location.state;
   let product = {
     name: "",
+    code: "",
+    offer: "",
     desc: "",
     price: "",
-    disc: "",
     stock: "",
     cat: { _id: "", name: "" },
     status: "",
-    image: [{ url: "/defaultProduct.png" }],
+    image: [{ url: "" }],
   };
 
-  let reviews = [];
   if (data) {
     product = data[0];
-    reviews = product.reviews;
   }
 
-  console.log(reviews)
 
   const dispatch = useDispatch();
 
@@ -130,9 +128,10 @@ const ProductDetails = () => {
   );
 
   const [name, setName] = useState(product.name);
+  const [code, setCode] = useState(product.code);
   const [desc, setDesc] = useState(product.desc);
   const [price, setPrice] = useState(product.price);
-  const [disc, setDisc] = useState(product.disc);
+  const [offer, setOffer] = useState(product.offer);
   const [afterDisc, setAfterDisc] = useState(price);
   const [stock, setStock] = useState(product.stock);
   const [image, setImage] = useState(product.image[0].url);
@@ -144,8 +143,6 @@ const ProductDetails = () => {
   });
   const [status, setStatus] = useState({value: product.status, label: product.status});
 
-  const [userReviews, setUserReviews] = useState(reviews);
-  const [readMore, setReadMore] = useState(false);
   const [disableEditing, setDisableEditing] = useState(true);
   const [disableEditBtn, setDisableEditBtn] = useState(false);
   const [disableUpdateBtn, setDisableUpdateBtn] = useState(true);
@@ -156,27 +153,6 @@ const ProductDetails = () => {
   }, [dispatch]);
 
 
-  const ratingsData = {
-    labels,
-    datasets: [
-      {
-        type: "bar",
-        data: [0, 1, 1.3, 3, 3.1, 3.7, 2.5, 4, 4.2, 4.5, 4.9, 5],
-        borderColor: "rgb(248, 163, 60)",
-        backgroundColor: "rgba(248, 163, 60, 0.5)",
-        hoverBackgroundColor: "rgb(248, 163, 60)",
-      },
-      {
-        type: "line",
-        tension: 0.5,
-        borderColor: "rgb(255, 99, 132)",
-        borderWidth: 1.5,
-        pointRadius: 2,
-        fill: false,
-        data: [0, 1, 1.3, 3, 3.1, 3.7, 2.5, 4, 4.2, 4.5, 4.9, 5],
-      },
-    ],
-  };
 
   const productSalesData = {
     labels,
@@ -214,8 +190,9 @@ const ProductDetails = () => {
 
     const newData = {
       name,
+      code,
+      offer,
       price,
-      disc,
       desc,
       image,
       status: status.value,
@@ -260,19 +237,7 @@ const ProductDetails = () => {
     },
   ];
 
-  const revs = [
-    {
-      name: "Bisma Khan",
-      date: "Oct 17, 2020",
-      comment:
-        "This product is so helpfulzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",
-    },
-    {
-      name: "Bisma Khan",
-      date: "Oct 17, 2020",
-      comment: "This product is so helpful",
-    },
-  ];
+  
 
   return (
     <>
@@ -336,7 +301,18 @@ const ProductDetails = () => {
                       onChange={(e) => setName(e.target.value)}
                     />
                   </div>
-
+                  <div>
+              <label for={"code"}>Code:</label>
+              <input
+                type={"text"}
+                name={"code"}
+                placeholder={"Product Code"}
+                disabled={disableEditing}
+                required
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+              />
+            </div>
                   <div>
                     <label for={"price"}>Price:</label>
                     <input
@@ -367,15 +343,15 @@ const ProductDetails = () => {
                 </div>
                 <div>
                   <div>
-                    <label for={"disc"}>Discount:</label>
+                    <label for={"disc"}>Offer:</label>
                     <input
                       type={"text"}
                       name={"disc"}
                       placeholder={"Discount"}
-                      value={disc}
+                      value={offer}
                       disabled={disableEditing}
                       onChange={(e) => {
-                        setDisc(e.target.value);
+                        setOffer(e.target.value);
                         const discAmount =
                           Number(price) * Number(e.target.value);
                         const afterDiscAmount = Number(price) - discAmount;
@@ -432,7 +408,7 @@ const ProductDetails = () => {
                 </div>
               </div>
             </div>
-            <div className="second-row">
+            {/* <div className="second-row">
               <div className="stats-2">
                 <div className={"ratings-graph"}>
                   <Bar options={ratingsOptions} data={ratingsData} />
@@ -514,7 +490,7 @@ const ProductDetails = () => {
                   </List>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         }
       />

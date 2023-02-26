@@ -91,14 +91,14 @@ function Dashboard() {
   const plugins = [
     {
       afterDraw: function (chart) {
-        // console.log(chart);
+        console.log(chart);
         if (chart.data.datasets[0].data.length < 1) {
           let ctx = chart.ctx;
           let width = chart.width;
           let height = chart.height;
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
-          ctx.fillStyle = "rgba(0, 0, 0, 0.5)"
+          ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
           ctx.font = "1em Arial";
           ctx.fillText("No data to display..", width / 2, height / 2);
           ctx.restore();
@@ -449,7 +449,13 @@ function Dashboard() {
           "rgb(200, 80, 44)",
           "rgb(227, 50, 30)",
         ],
-        data: [processing, shipped, delivered, cancelled],
+        data:
+          processing === 0 &&
+          shipped === 0 &&
+          delivered === 0 &&
+          cancelled === 0
+            ? []
+            : [processing, shipped, delivered, cancelled],
       },
     ],
   };
@@ -584,7 +590,7 @@ function Dashboard() {
 
                 <div className="charts">
                   <div className="line">
-                    <Bar data={sales} options={optionSales} plugins={plugins}/>
+                    <Bar data={sales} options={optionSales} plugins={plugins} />
                   </div>
                   <div className="line">
                     <Line
@@ -596,10 +602,18 @@ function Dashboard() {
                 </div>
                 <div className="charts">
                   <div className="doughnut">
-                    <Doughnut data={ordersData} options={ordersOptions} plugins={plugins}/>
+                    <Doughnut
+                      data={ordersData}
+                      options={ordersOptions}
+                      plugins={plugins}
+                    />
                   </div>
                   <div className="bar">
-                    <Bar data={top5products} options={optionstop5products} plugins={plugins}/>
+                    <Bar
+                      data={top5products}
+                      options={optionstop5products}
+                      plugins={plugins}
+                    />
                   </div>
                 </div>
 

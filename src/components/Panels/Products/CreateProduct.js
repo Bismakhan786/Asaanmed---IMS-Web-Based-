@@ -14,18 +14,6 @@ import SuccessIcon from "@mui/icons-material/CheckCircleRounded";
 import ErrorIcon from "@mui/icons-material/ErrorRounded";
 
 const CreateProduct = () => {
-  const [name, setName] = useState("");
-  const [code, setCode] = useState("");
-  const [offer, setOffer] = useState("");
-  const [price, setPrice] = useState("");
-  const [stock, setStock] = useState("");
-  const [stockError, setStockError] = useState("");
-  const [afterDisc, setAfterDisc] = useState(price);
-  const [desc, setDesc] = useState("");
-  const [image, setImage] = useState("/defaultProduct.png");
-  const [imagePreview, setImagePreview] = useState("/defaultProduct.png");
-  const [category, setCategory] = useState();
-  const [status, setStatus] = useState();
   const toastId = useRef(null);
 
   const dispatch = useDispatch();
@@ -37,43 +25,6 @@ const CreateProduct = () => {
   useEffect(() => {
     dispatch(getAllCategories());
   }, [dispatch]);
-
-  const uploadImage = (e) => {
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      if (reader.readyState === 2) {
-        setImagePreview(reader.result);
-        setImage(reader.result);
-      }
-    };
-
-    reader.readAsDataURL(e.target.files[0]);
-  };
-
-  const submitForm = (e) => {
-    e.preventDefault();
-
-    toastId.current = toast("Creating....", {
-      autoClose: false,
-      icon: <Spinner size={10} color={"white"} />,
-    });
-
-    const product = {
-      name,
-      code,
-      offer,
-      price,
-      desc,
-      image,
-      status,
-      stock,
-      cat: category.id,
-    };
-
-    console.log(category);
-    // dispatch(addProduct(product));
-  };
 
   let categoryOptions = [];
   categories &&
@@ -96,6 +47,79 @@ const CreateProduct = () => {
     },
   ];
 
+  const [name, setName] = useState("");
+  const [code, setCode] = useState("");
+  const [offer, setOffer] = useState("");
+  const [price, setPrice] = useState("");
+  const [stock, setStock] = useState("");
+  const [stockError, setStockError] = useState("");
+  const [afterDisc, setAfterDisc] = useState(price);
+  const [desc, setDesc] = useState("");
+  const [image, setImage] = useState("");
+  const [imagePreview, setImagePreview] = useState("/defaultProduct.png");
+  const [category, setCategory] = useState(categoryOptions.length > 0 && categoryOptions[0]);
+  const [status, setStatus] = useState(statusOptions[0]);
+
+  const uploadImage = (e) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setImagePreview(reader.result);
+        setImage(reader.result);
+      }
+    };
+
+    reader.readAsDataURL(e.target.files[0]);
+  };
+
+  const submitForm = (e) => {
+    e.preventDefault();
+
+    toastId.current = toast("Creating....", {
+      icon: <Spinner size={10} color={"white"} />,
+    });
+
+    let product = {}
+    if(image){
+      product = {
+        name,
+        code,
+        offer,
+        price,
+        desc,
+        image,
+        status: status.value,
+        stock,
+        cat: category?.id,
+      }
+    }else{
+      product = {
+        name,
+        code,
+        offer,
+        price,
+        desc,
+        status: status.value,
+        stock,
+        cat: category?.id,
+      }
+    }
+
+    console.log(product);
+    dispatch(addProduct(product));
+    setName("")
+    setCode("")
+    setOffer("")
+    setPrice("")
+    setDesc("")
+    setStatus({})
+    setStock("")
+    setCategory({})
+    setImage("")
+    setAfterDisc("")
+  };
+
   return (
     <PanelLayout
       PanelName={"Create Product"}
@@ -109,14 +133,14 @@ const CreateProduct = () => {
                 render: "Created Successfully!",
                 type: toast.TYPE.SUCCESS,
                 icon: <SuccessIcon className="successIcon" />,
-                autoClose: 5000,
+                autoClose: 1000,
               })}
             {creationError &&
               toast.update(toastId.current, {
                 render: creationError,
                 type: toast.TYPE.ERROR,
                 icon: <ErrorIcon className="errorIcon" />,
-                autoClose: 5000,
+                autoClose: 1000,
               })}
             <CustomToast />
             <div className="select-image">
@@ -234,23 +258,23 @@ const CreateProduct = () => {
             <div>
               <label for={"cat"}>Category:</label>
               <Dropdown
-                defaultValue={categoryOptions[0]}
+                // defaultValue={categoryOptions[0]}
                 options={categoryOptions}
                 disabled={creationInProcess}
                 name={"cat"}
                 placeholder={"-- Category --"}
-                onChange={(e) => setCategory({ id: e.id, name: e.value })}
+                onChange={(e) => setCategory({ id: e.id, name: e.value, label: e.value })}
               />
             </div>
             <div>
               <label for={"status"}>Status:</label>
               <Dropdown
-                defaultValue={statusOptions[0]}
+                // defaultValue={statusOptions[0]}
                 options={statusOptions}
                 disabled={creationInProcess}
                 name={"status"}
                 placeholder={"-- Status --"}
-                onChange={(e) => setStatus(e.value)}
+                onChange={(e) => setStatus({ value: e.value, label: e.value })}
               />
             </div>
             <div className="product-desc">

@@ -36,6 +36,24 @@ export const updateOrder = createAsyncThunk(
   }
 );
 
+
+export const updateOrderStatusMany = createAsyncThunk(
+  "orders/update/status/many",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_URL}/admin/orders/update/status/many`,
+        data,
+        { withCredentials: true }
+      );
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
 export const deleteOrder = createAsyncThunk(
   "orders/delete",
   async (id, { rejectWithValue }) => {
@@ -44,7 +62,23 @@ export const deleteOrder = createAsyncThunk(
         `${process.env.REACT_APP_API_URL}/admin/orders/${id}`,
         { withCredentials: true }
       );
-      console.log(response.data);
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const deleteManyOrders = createAsyncThunk(
+  "orders/delete/many",
+  async (orderids, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_URL}/admin/orders/delete/many`,
+        {orderids},
+        { withCredentials: true }
+      );
 
       return response.data;
     } catch (error) {
@@ -57,13 +91,18 @@ const initialState = {
   loadingOrders: false,
   deletionInProcess: false,
   updationInProcess: false,
+  updateManyInProcess: false,
+  deleteManyInProcess: false,
   orders: [],
   ordersCount: null,
+  updatedCount: null,
+  deletedCount: null,
   totalAmount: null,
   updatedOrder: null,
-  deletedOrder: null,
   error: null,
   updationError: null,
+  updateManyError: null,
+  deleteManyError: null,
   deletionError: null,
 };
 
@@ -91,18 +130,51 @@ const OrdersSlice = createSlice({
         state.deletionInProcess = true;
       })
       .addCase(deleteOrder.fulfilled, (state, action) => {
-        state.orders = state.orders.filter(
-          (order) => order._id !== action.payload.order._id
-        );
+        state.orders = action.payload.orders;
+        state.ordersCount = action.payload.ordersCount;
+        state.totalAmount = action.payload.totalAmount;
         state.loadingOrders = false;
         state.deletionInProcess = false;
-        state.deletedOrder = action.payload.order
         state.deletionError = null
       })
       .addCase(deleteOrder.rejected, (state, action) => {
         state.loadingOrders = false;
         state.deletionInProcess = false
         state.deletionError = action.payload;
+      })
+      .addCase(deleteManyOrders.pending, (state, action) => {
+        state.loadingOrders = true;
+        state.deleteManyInProcess = true;
+      })
+      .addCase(deleteManyOrders.fulfilled, (state, action) => {
+        state.orders = action.payload.orders;
+        state.ordersCount = action.payload.ordersCount;
+        state.totalAmount = action.payload.totalAmount;
+        state.deletedCount = action.payload.deletedCount;
+        state.loadingOrders = false;
+        state.deleteManyInProcess = false;
+        state.deleteManyError = null;
+      })
+      .addCase( deleteManyOrders.rejected, (state, action) => {
+        state.deleteManyInProcess = false;
+        state.deleteManyError = action.payload;
+      })
+      .addCase(updateOrderStatusMany.pending, (state, action) => {
+        state.loadingOrders = true;
+        state.updateManyInProcess = true;
+      })
+      .addCase(updateOrderStatusMany.fulfilled, (state, action) => {
+        state.orders = action.payload.orders;
+        state.ordersCount = action.payload.ordersCount;
+        state.totalAmount = action.payload.totalAmount;
+        state.updatedCount = action.payload.updatedCount;
+        state.loadingOrders = false;
+        state.updateManyInProcess = false;
+        state.updateManyError = null;
+      })
+      .addCase(updateOrderStatusMany.rejected, (state, action) => {
+        state.updateManyInProcess = false;
+        state.updateManyError = action.payload;
       })
       .addCase(updateOrder.pending, (state, action) => {
         state.updationInProcess = true;

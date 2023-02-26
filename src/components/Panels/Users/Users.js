@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import "./Users.css";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -8,13 +8,16 @@ import PanelLayout from "../../../Shared/PanelLayout/PanelLayout";
 
 const Users = () => {
   const dispatch = useDispatch();
-  const { loading, users } = useSelector((state) => state.users);
+  const { loadingUsers, users } = useSelector((state) => state.users);
+
+  const selectedItems = useRef([]);
+
 
   useEffect(() => {
     dispatch(getAllUsers());
   }, [dispatch]);
 
-  const columns = ["ID", "Name", "Contact"];
+  const columns = ["ID", "Name", "Contact", "Orders", "Joined At"];
   const rows = [];
   const detailedData = [];
 
@@ -24,6 +27,8 @@ const Users = () => {
         id: user._id,
         name: user.name,
         contact: user.contact,
+        orders: user.numOfOrders,
+        since: user.createdAt?.slice(0, 10)
       });
       detailedData.push(user);
     });
@@ -38,8 +43,11 @@ const Users = () => {
         <Table
           columns={columns}
           rows={rows}
-          loading={loading}
+          loading={loadingUsers}
           detailedData={detailedData}
+          selectedItems={selectedItems}
+          selectItemsDisable={true}
+          emptyTableText={"Sadly! You have no users to display.."}
           onEdit={"users"}
           deleteFunc={deleteItem}
           bulkActions={(<button className="bulk-action-button"><span className="bulk-action-btn-txt">Block</span></button>)}

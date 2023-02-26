@@ -3,25 +3,25 @@
   background-color: white;
 }
 
-.product-form-container{
+.product-form-container {
   padding: 2vmax 1.6vmax;
   height: 100vh;
 }
-.product-form-container > div{
+.product-form-container > div {
   display: grid;
   grid-template-columns: 9vmax 1fr;
   align-items: center;
   margin-bottom: 0.7vmax;
 }
 
-.product-form-container > div > label{
+.product-form-container > div > label {
   font: 300 0.9vmax arial;
   color: rgba(0, 0, 0, 0.7);
   min-width: 7vmax;
   max-width: 7vmax;
 }
 
-.product-form-container > div > input{
+.product-form-container > div > input {
   padding: 0.5vmax 1vmax;
   font: 300 0.9vmax arial;
   border-radius: 5px;
@@ -29,12 +29,13 @@
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
-.select-image >div > input[type="file"]{
+.select-image > div > input[type="file"] {
   padding: 0;
   display: flex;
 }
 
-.select-image > div > input::file-selector-button, .updateImage > input::file-selector-button{
+.select-image > div > input::file-selector-button,
+.updateImage > input::file-selector-button {
   cursor: pointer;
   width: 100%;
   background-color: transparent;
@@ -46,33 +47,34 @@
   transition: all 0.5s ease;
 }
 
-.select-image >div > input::file-selector-button:hover:enabled, .updateImage > input::file-selector-button:hover:enabled{
+.select-image > div > input::file-selector-button:hover:enabled,
+.updateImage > input::file-selector-button:hover:enabled {
   color: #e37e38;
   transform: scale(1.01);
 }
 
-.select-image{
+.select-image {
   display: flex !important;
   justify-content: flex-end;
 }
 
-.select-image > div:first-child{
+.select-image > div:first-child {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.import-export-btns{
+.import-export-btns {
   display: flex;
   justify-content: flex-end;
   padding: 10px 20px;
 }
 
-.import-export-btns > button>svg{
+.import-export-btns > button > svg {
   margin-left: 5px;
 }
 
-.product-btns{
+.product-btns {
   display: flex !important;
   position: absolute;
   bottom: 0;
@@ -80,12 +82,46 @@
   padding: 0.5vmax 2vmax;
 }
 
-.updateBtn > button{
+.modal-close-btn{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  outline: none;
+  background-color: transparent;
+  border: none;
+  font-size: 12px !important;
+}
+
+.modal-div{
+  /* background-color: red; */
+  min-width: 250px;
+  min-height: 180px;
+  padding: 10px;
+  margin: 10px;
+}
+
+.modal-heading{
+  font: normal 1.5em Arial;
+}
+
+.modal-warning{
+  font: 300 0.8em Arial;
+}
+
+.updateBtn,
+.modal-btns {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.updateBtn > button {
   padding: 0.5vmax 1vmax !important;
 }
 
-
-.product-btns > button, .updateBtn > button, .import-export-btns>button{
+.product-btns > button,
+.updateBtn > button,
+.import-export-btns > button,
+.modal-btns > button {
   padding: 0.7vmax 2vmax;
   display: flex;
   align-items: center;
@@ -99,17 +135,24 @@
   transition: all 0.5s ease;
 }
 
-.product-btns > button:hover, .updateBtn > button:hover:enabled, .import-export-btns > button:hover:enabled{
+.product-btns > button:hover,
+.updateBtn > button:hover:enabled,
+.import-export-btns > button:hover:enabled, .modal-btns>button:hover:enabled {
   background-color: #e37e38;
   color: white;
   cursor: pointer;
+}
+
+.modal-btns > button:disabled{
+  border: 1px solid rgb(128, 128, 128, 0.5);
+  background-color: rgb(128, 128, 128, 0.5);
 }
 
 .product-desc {
   align-items: baseline !important;
 }
 
-.product-desc > textarea{
+.product-desc > textarea {
   border: 1px solid rgba(0, 0, 0, 0.2);
   padding: 0.5vmax 1vmax;
   border-radius: 5px;
@@ -121,8 +164,7 @@
   resize: none;
 }
 
-
-.product-details-main-container{
+.product-details-main-container {
   background-color: rgba(0, 0, 0, 0.05);
   display: grid;
   grid-template-rows: 1fr 1fr;
@@ -131,32 +173,31 @@
   height: 100%;
 }
 
-
-.second-row{
+.second-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
 
-.stats-1{
+.stats-1 {
   padding: 1vmax 1.5vmax;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   margin-bottom: 0.5vmax;
 }
 
-.stats-1 > div{
+.stats-1 > div {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
 }
 
-.stats-1 > div:first-child{
+.stats-1 > div:first-child {
   display: flex !important;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1vmax;
 }
 
-.form-fields > div > div{
+.form-fields > div > div {
   display: grid;
   grid-template-columns: 7vmax 1fr;
   /* padding: 0 0.5vmax; */
@@ -165,11 +206,11 @@
   align-items: baseline;
 }
 
-.form-fields > div > div > label{
+.form-fields > div > div > label {
   font: 300 0.9vmax arial;
 }
 
-.form-fields > div > div > input{
+.form-fields > div > div > input {
   outline: none;
   border: 1px solid rgba(0, 0, 0, 0.2);
   padding: 0.7vmax 1vmax;
@@ -178,25 +219,23 @@
   color: rgba(0, 0, 0, 0.6);
 }
 
-.updateImage{
+.updateImage {
   display: flex !important;
   align-items: center !important;
 }
 
-
-.no-reviews-text{
+.no-reviews-text {
   text-align: center;
   font: 300 0.9vmax arial;
 }
 
-
-.cs2Btn{
+.cs2Btn {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.cs2Btn > button{
+.cs2Btn > button {
   border: none;
   outline: none;
   background-color: #e37e38;
@@ -207,30 +246,30 @@
   transition: all 0.5s ease;
 }
 
-.cs2Btn > button:hover{
+.cs2Btn > button:hover {
   cursor: pointer;
   transform: scale(1.05);
 }
 
-.filter-container > div:first-child > p{
+.filter-container > div:first-child > p {
   font: bold 0.9vmax cursive;
 }
 
-.filter-container > div >div > label{
+.filter-container > div > div > label {
   font: 300 0.9vmax arial;
 }
 
-.stats-2{
+.stats-2 {
   display: grid;
   grid-template-rows: 1fr 1fr;
 }
 
-.stats-2>div{
+.stats-2 > div {
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 5px;
 }
 
-.reviews-container{
+.reviews-container {
   background-color: #e37e38;
   border: 1px solid rgba(0, 0, 0, 0.1);
   padding: 0.7vmax 1.6vmax;
@@ -239,17 +278,16 @@
   background-color: white;
 }
 
-.reviews-container > div:first-child{
+.reviews-container > div:first-child {
   display: flex;
   justify-content: space-between;
 }
 
-.reviews-container > div:first-child > span{
+.reviews-container > div:first-child > span {
   font: bold 0.9vmax cursive;
 }
 
-
-.ratings-graph{
+.ratings-graph {
   min-width: 80%;
   width: auto;
   padding: 0.6vmax 1vmax;
@@ -259,7 +297,7 @@
   margin-bottom: 0.5vmax;
 }
 
-.sales-graph{
+.sales-graph {
   min-width: 80%;
   width: auto;
   padding: 0.6vmax 1vmax;
@@ -269,7 +307,7 @@
   margin-bottom: 0.5vmax;
 }
 
-.reviews-container{
+.reviews-container {
   margin-left: 0.5vmax;
   min-width: 20vw !important;
   margin-bottom: 0.5vmax;
@@ -278,7 +316,7 @@
   /* overflow-y: scroll; */
 }
 
-.rev svg{
+.rev svg {
   font-size: 1.4vmax !important;
 }
 
@@ -287,17 +325,16 @@
   overflow-y: scroll;
 }
 
-.read-more{
+.read-more {
   margin: 0;
   color: #e37e38;
 }
-.read-more:hover{
+.read-more:hover {
   color: #aa5314;
   cursor: pointer;
 }
 
-
-.comment{
+.comment {
   margin: 0 2vmax 0 0;
   width: 85%;
   white-space: nowrap;
@@ -305,68 +342,68 @@
   text-overflow: ellipsis;
 }
 
-.comment-new{
+.comment-new {
   margin: 0 2vmax 0 0;
   width: 85%;
   white-space: wrap;
   word-wrap: break-word;
 }
 
-.nameRating{
+.nameRating {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
 }
 
-.nameRating > p{
+.nameRating > p {
   margin: 0 10px 0 0;
 }
 
-.nameRating svg{
+.nameRating svg {
   font-size: 0.9vmax !important;
   padding: 0.2vmax 0 !important;
 }
 
-.css-1m6607n-MuiListItemAvatar-root{
+.css-1m6607n-MuiListItemAvatar-root {
   min-width: 3.5vmax !important;
 }
 
-.css-2s90m6-MuiAvatar-root{
+.css-2s90m6-MuiAvatar-root {
   width: 2.5vmax !important;
   height: 2.5vmax !important;
   background-color: rgba(0, 0, 0, 0.2) !important;
 }
 
-.css-83ijpv-MuiTypography-root{
+.css-83ijpv-MuiTypography-root {
   font: 300 0.7vmax cursive !important;
 }
 
-.css-10hburv-MuiTypography-root{
+.css-10hburv-MuiTypography-root {
   font: bold 0.9vmax arial !important;
 }
 
-.css-77kudk-MuiListItem-root{
+.css-77kudk-MuiListItem-root {
   padding: 0.1vmax 0.5vmax !important;
 }
 
-
-
-@media screen and (max-width:768px) {
-  .product-details-main-container, .stats-1 > div{
+@media screen and (max-width: 768px) {
+  .product-details-main-container,
+  .stats-1 > div {
     display: flex;
     flex-direction: column;
   }
-  .stats-1 > div:first-child{
+  .stats-1 > div:first-child {
     flex-direction: row;
   }
-  .ratings-graph, .sales-graph{
+  .ratings-graph,
+  .sales-graph {
     width: auto;
   }
-  .product-form-container{
+  .product-form-container {
     padding: 3vmax 3vmax;
   }
-  .second-row{
+  .second-row {
     display: flex;
     flex-direction: column;
   }
