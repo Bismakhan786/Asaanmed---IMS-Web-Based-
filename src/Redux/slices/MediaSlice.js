@@ -1,0 +1,116 @@
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+
+export const getMediaFromAPI = createAsyncThunk(
+  "media/get",
+  async (arg, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/admin/media`,
+        { withCredentials: true }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const deleteMedia = createAsyncThunk(
+  "media/delete",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/admin/media/delete/${id}`,
+        { withCredentials: true }
+      );
+      console.log(response.data);
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const uploadMedia = createAsyncThunk(
+  "media/upload",
+  async (dataArray, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/admin/media/upload`,
+        dataArray,
+        { withCredentials: true }
+      );
+      console.log(response.data);
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+const initialState = {
+  loadingMedia: false,
+  creationInProcess: false,
+  deletionInProcess: false,
+  
+  media: [],
+  mediaCount: null,
+  error: null,
+  creationError: null,
+  deletionError: null,
+};
+
+const MediaSlice = createSlice({
+  name: "media",
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(getMediaFromAPI.pending, (state, action) => {
+        state.loadingMedia = true;
+      })
+      .addCase(getMediaFromAPI.fulfilled, (state, action) => {
+        state.media = action.payload.media;
+        state.mediaCount = action.payload.mediaCount;
+        state.loadingMedia = false;
+      })
+      .addCase(getMediaFromAPI.rejected, (state, action) => {
+        state.loadingMedia = false;
+        state.error = action.payload;
+      })
+      .addCase(deleteMedia.pending, (state, action) => {
+        state.loadingMedia = true;
+        state.deletionInProcess = true;
+      })
+      .addCase(deleteMedia.fulfilled, (state, action) => {
+        state.media = action.payload.media;
+        state.mediaCount = action.payload.mediaCount;
+        state.loadingMedia = false;
+        state.deletionInProcess = false;
+        state.deletionError = null;
+      })
+      .addCase(deleteMedia.rejected, (state, action) => {
+        state.loadingMedia = false;
+        state.deletionInProcess = false;
+        state.deletionError = action.payload;
+      })
+
+      .addCase(uploadMedia.pending, (state, action) => {
+        state.creationInProcess = true;
+      })
+      .addCase(uploadMedia.fulfilled, (state, action) => {
+        state.creationInProcess = false;
+        state.media = action.payload.media;
+        state.creationError = null;
+      })
+      .addCase(uploadMedia.rejected, (state, action) => {
+        state.creationInProcess = false;
+        state.creationError = action.payload;
+      });
+  },
+});
+
+export default MediaSlice.reducer;

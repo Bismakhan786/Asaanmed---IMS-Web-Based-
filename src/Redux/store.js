@@ -5,6 +5,7 @@ import OrdersSlice from './slices/OrdersSlice';
 import UsersSlice from './slices/UsersSlice';
 import CategoriesSlice from './slices/CategoriesSlice'
 import ProductDetails from './slices/ProductDetails';
+import MediaSlice from './slices/MediaSlice';
 
 const reducer = {
     products: ProductsSlice,
@@ -12,7 +13,8 @@ const reducer = {
     admin: AdminLoginSlice,
     orders: OrdersSlice,
     users: UsersSlice,
-    productDetail: ProductDetails
+    productDetail: ProductDetails,
+    media: MediaSlice
 }
 
 const store = configureStore({

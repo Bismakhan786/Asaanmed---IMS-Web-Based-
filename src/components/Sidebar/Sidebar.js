@@ -11,6 +11,7 @@ import ImportExportIcon from "@mui/icons-material/ImportExport";
 import AddIcon from "@mui/icons-material/Add";
 import PeopleIcon from "@mui/icons-material/People";
 import ListAltIcon from "@mui/icons-material/ListAlt";
+import MediaIcon from "@mui/icons-material/FilterVintage";
 import DiscountIcon from '@mui/icons-material/Discount'
 import CategoriesIcon from '@mui/icons-material/Widgets';
 import LogoutRounded from "@mui/icons-material/LogoutRounded";
@@ -36,6 +37,12 @@ function Sidebar() {
           <DashboardIcon />
           
           Dashboard
+        </p>
+      </Link>
+      <Link to={"/admin/media"}>
+        <p>
+          <MediaIcon />
+          Media
         </p>
       </Link>
       <Link>

@@ -22,6 +22,7 @@ import UserDetails from "./components/Panels/Users/UserDetails";
 import CategoryDetails from "./components/Panels/Categories/CategoryDetails";
 import Home from "./Home/Home";
 import Footer from "./components/Footer/Footer";
+import Media from "./components/Panels/Media/Media";
 
 function App() {
   return (
@@ -44,7 +45,8 @@ function App() {
 
           <Route exact path="/admin/login" element={<Login />} />
           <Route element={<ProtectedRoute />}>
-            <Route exact path="admin/dashboard" element={<Dashboard />} />
+            <Route exact path="/admin/dashboard" element={<Dashboard />} />
+            <Route exact path="/admin/media" element={<Media />} />
             <Route exact path="/admin/products" element={<Products />} />
             <Route
               exact
