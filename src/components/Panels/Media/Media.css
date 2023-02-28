@@ -131,6 +131,7 @@ img {
   padding-bottom: 2rem;
   margin: 1rem 0.5rem;
   position: relative;
+  /* background-color: red; */
   /* box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px; */
 }
 
@@ -154,6 +155,13 @@ img {
   justify-content: center;
   font-size: 0.7em;
 }
+
+.db-image >button:last-child{
+  margin-top: 0.2rem;
+  position: relative;
+  width: 100%;
+  padding: 0.5rem;
+} 
 
 .db-image > button >svg{
   margin-left: 8px;

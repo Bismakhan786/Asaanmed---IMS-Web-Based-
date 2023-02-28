@@ -51,16 +51,35 @@ export const uploadMedia = createAsyncThunk(
   }
 );
 
+export const deleteAllMedia = createAsyncThunk(
+  "media/delete/all",
+  async (args, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/admin/media/delete/all/images`,
+        { withCredentials: true }
+      );
+      console.log(response.data);
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
 const initialState = {
   loadingMedia: false,
   creationInProcess: false,
-  deletionInProcess: false,
-  
+  deleteImageInProcess: false,
+  deleteMediaInProcess: false,
   media: [],
   mediaCount: null,
+  deletedCount: null,
   error: null,
   creationError: null,
-  deletionError: null,
+  deleteImageError: null,
+  deleteMediaError: null,
 };
 
 const MediaSlice = createSlice({
@@ -83,21 +102,36 @@ const MediaSlice = createSlice({
       })
       .addCase(deleteMedia.pending, (state, action) => {
         state.loadingMedia = true;
-        state.deletionInProcess = true;
+        state.deleteImageInProcess = true;
       })
       .addCase(deleteMedia.fulfilled, (state, action) => {
         state.media = action.payload.media;
         state.mediaCount = action.payload.mediaCount;
         state.loadingMedia = false;
-        state.deletionInProcess = false;
-        state.deletionError = null;
+        state.deleteImageInProcess = false;
+        state.deleteImageError = null;
       })
       .addCase(deleteMedia.rejected, (state, action) => {
         state.loadingMedia = false;
-        state.deletionInProcess = false;
-        state.deletionError = action.payload;
+        state.deleteImageInProcess = false;
+        state.deleteImageError = action.payload;
       })
-
+      .addCase(deleteAllMedia.pending, (state, action) => {
+        state.loadingMedia = true;
+        state.deleteMediaInProcess = true;
+      })
+      .addCase(deleteAllMedia.fulfilled, (state, action) => {
+        state.media = action.payload.media;
+        state.deletedCount = action.payload.deletedCount;
+        state.loadingMedia = false;
+        state.deleteMediaInProcess = false;
+        state.deleteMediaError = null;
+      })
+      .addCase(deleteAllMedia.rejected, (state, action) => {
+        state.loadingMedia = false;
+        state.deleteImageInProcess = false;
+        state.deleteMediaError = action.payload;
+      })
       .addCase(uploadMedia.pending, (state, action) => {
         state.creationInProcess = true;
       })
