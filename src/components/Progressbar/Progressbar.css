@@ -1,0 +1,15 @@
+.anim-move{
+    height: 10%;
+    width: 10;
+    background-color: rgba(0, 0, 0, 1);
+    filter: blur(4px);
+    transition: all 0.5s ease;
+    animation: mymove 5s infinite !important;
+    display: block !important;
+}
+
+
+@keyframes mymove {
+    from {left: 0px;}
+    to {right: 0px;}
+  }

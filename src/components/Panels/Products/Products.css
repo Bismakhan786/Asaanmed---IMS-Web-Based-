@@ -72,6 +72,7 @@
 
 .import-export-btns > button > svg {
   margin-left: 5px;
+  font-size: 16px;
 }
 
 .product-btns {
@@ -90,6 +91,12 @@
   background-color: transparent;
   border: none;
   font-size: 12px !important;
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+
+.modal-close-btn:hover {
+  color: red;
 }
 
 .modal-div{

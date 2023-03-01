@@ -8,6 +8,7 @@ import {
   updateStatusOfManyProducts,
   updateStockOfManyProducts,
   updateCategoryOfManyProducts,
+  addManyProducts,
 } from "../../../Redux/slices/ProductsSlice";
 
 import ImportExportIcon from "@mui/icons-material/Publish";
@@ -25,6 +26,8 @@ import Edit from "@mui/icons-material/Edit";
 import Modal from "react-modal";
 import { getAllCategories } from "../../../Redux/slices/CategoriesSlice";
 import Dropdown from "../../../Shared/Dropdown/Dropdown";
+import Papa from "papaparse";
+import ProgressBar from "../../Progressbar/Progressbar";
 
 const customStyles = {
   content: {
@@ -37,11 +40,24 @@ const customStyles = {
   },
 };
 
+const customStylesImportModal = {
+  content: {
+    top: "15%",
+    left: "15%",
+    right: "15%",
+    bottom: "10%",
+    // marginBottom: "-20%",
+    // transform: "translate(-50%, -50%)",
+  },
+};
+
 Modal.setAppElement("#root");
 
 const Products = () => {
   const dispatch = useDispatch();
   const { categories } = useSelector((state) => state.categories);
+  const { media } = useSelector((state) => state.media);
+  const inputRef = useRef();
 
   useEffect(() => {
     dispatch(getAllCategories());
@@ -69,7 +85,13 @@ const Products = () => {
     },
   ];
 
+  const [file, setFile] = useState(null);
+  const [progress, setProgress] = useState(0);
+  const [progressText, setProgressText] = useState("");
+  const [dbData, setDbData] = useState([]);
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [importModalIsOpen, setImportModalIsOpen] = useState(false);
+  const [exportModalIsOpen, setExportModalIsOpen] = useState(false);
   const [updateModalIsOpen, setUpdateModalIsOpen] = useState(false);
   const [isCat, setIsCat] = useState(false);
   const [isStatus, setIsStatus] = useState(false);
@@ -89,6 +111,22 @@ const Products = () => {
     setIsOpen(false);
   }
 
+  function openImportModal() {
+    setImportModalIsOpen(true);
+  }
+
+  function closeImportModal() {
+    setImportModalIsOpen(false);
+  }
+
+  function openExportModal() {
+    setExportModalIsOpen(true);
+  }
+
+  function closeExportModal() {
+    setExportModalIsOpen(false);
+  }
+
   const {
     loadingProducts,
     products,
@@ -104,6 +142,8 @@ const Products = () => {
     updateStockError,
     updateStatusInProcess,
     updateStatusError,
+    createManyLoading,
+    createManyError,
   } = useSelector((state) => state.products);
 
   const toastIdUpdateStatus = useRef(null);
@@ -111,6 +151,8 @@ const Products = () => {
   const toastIdUpdateCategory = useRef(null);
   const toastIdDeleteSingle = useRef(null);
   const toastIdDeleteMany = useRef(null);
+  const toastIdCreateMany = useRef(null);
+  const toastIdExportDownload = useRef(null);
   const selectedItems = useRef([]);
 
   const columns = [
@@ -229,11 +271,178 @@ const Products = () => {
     selectedItems.current = [];
   };
 
+  const dragEnter = (event) => {
+    console.log(event);
+    event.target.style.backgroundColor = "rgba(95, 158, 160, 0.05)";
+  };
+
+  const dragLeave = (event) => {
+    event.target.style.backgroundColor = "rgba(0, 0, 0, 0.01)";
+  };
+
+  const handleDragOver = (event) => {
+    event.preventDefault();
+  };
+
+  const handleDrop = (event) => {
+    event.preventDefault();
+    setFile(event.dataTransfer.files[0]);
+    setProgress(35);
+    setProgressText("Initializing resources...");
+    console.log(event.dataTransfer.files);
+    Papa.parse(event.dataTransfer.files[0], {
+      header: true,
+      skipEmptyLines: true,
+      complete: (results) => {
+        setProgress(50);
+        setProgressText("Reading from CSV file..");
+        results.data.map((d, i) => {
+          dbData.push({
+            name: d[Object.keys(d)[0]],
+            code: d[Object.keys(d)[1]],
+            offer: Number(d[Object.keys(d)[2]]),
+            price: Number(d[Object.keys(d)[3]]),
+            stock: Number(d[Object.keys(d)[4]]),
+            cat: d[Object.keys(d)[5]],
+            status:
+              d[Object.keys(d)[6]].charAt(0).toUpperCase() +
+              d[Object.keys(d)[6]].slice(1),
+            desc: d[Object.keys(d)[7]],
+            image: d[Object.keys(d)[8]],
+          });
+        });
+        setProgress(100);
+        setProgressText("Upload Complete...");
+      },
+    });
+
+    console.log(dbData);
+  };
+
+  const handleSelectFile = (event) => {
+    console.log(event);
+    setFile(event.target.files[0]);
+    setProgress(35);
+    setProgressText("Initializing resources...");
+    console.log(event.target.files);
+    Papa.parse(event.target.files[0], {
+      header: true,
+      skipEmptyLines: true,
+      complete: (results) => {
+        setProgress(50);
+        setProgressText("Reading from CSV file..");
+        results.data.map((d, i) => {
+          dbData.push({
+            name: d[Object.keys(d)[0]],
+            code: d[Object.keys(d)[1]],
+            offer: Number(d[Object.keys(d)[2]]),
+            price: Number(d[Object.keys(d)[3]]),
+            stock: Number(d[Object.keys(d)[4]]),
+            cat: d[Object.keys(d)[5]],
+            status:
+              d[Object.keys(d)[6]].charAt(0).toUpperCase() +
+              d[Object.keys(d)[6]].slice(1),
+            desc: d[Object.keys(d)[7]],
+            image: d[Object.keys(d)[8]],
+          });
+        });
+        setProgress(100);
+        setProgressText("Upload Complete...");
+      },
+    });
+
+    console.log(dbData);
+  };
+
+  const createManyProductsDB = () => {
+    setImportModalIsOpen(false);
+
+    toastIdCreateMany.current = toast("Creating....", {
+      icon: <Spinner size={10} color={"white"} />,
+    });
+
+    dispatch(addManyProducts(dbData));
+    setFile(null);
+    setDbData([]);
+    setProgress(0);
+    setProgressText("");
+  };
+
+  const handleExportCSV = () => {
+
+    toastIdExportDownload.current = toast("Downloading....", {
+      icon: <Spinner size={10} color={"white"} />,
+    });
+
+    const fields = [
+      "Name",
+      "Code",
+      "Offer",
+      "Price",
+      "Stock",
+      "Category",
+      "Status",
+      "Description",
+      "Image"
+    ]
+
+    const data = detailedData.map((row) => 
+      [
+        row.name,
+        row.code,
+        row.offer,
+        row.price,
+        row.stock,
+        row.cat.name,
+        row.status,
+        row.desc,
+        row.image[0].url
+      ]
+    )
+    console.log(fields, data)
+    const csv = Papa.unparse({
+      data,
+      fields
+    })
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'Products(Exported)';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    toast.update(toastIdExportDownload.current, {
+      render: "Downloaded Successfully!",
+      type: toast.TYPE.SUCCESS,
+      icon: <SuccessIcon className="successIcon" />,
+      autoClose: 500,
+    })
+  }
+
   return (
     <PanelLayout
       PanelName={"Products"}
       MainLayout={
         <>
+        {
+          
+        }
+          {!createManyLoading &&
+            toast.update(toastIdCreateMany.current, {
+              render: "Created Successfully!",
+              type: toast.TYPE.SUCCESS,
+              icon: <SuccessIcon className="successIcon" />,
+              autoClose: 3000,
+            })}
+          {createManyError &&
+            toast.update(toastIdCreateMany.current, {
+              render: createManyError,
+              type: toast.TYPE.ERROR,
+              icon: <ErrorIcon className="errorIcon" />,
+              autoClose: 3000,
+            })}
           {!deletionInProcess &&
             toast.update(toastIdDeleteSingle.current, {
               render: "Deleted Successfully!",
@@ -306,6 +515,135 @@ const Products = () => {
               autoClose: 3000,
             })}
           <CustomToast />
+            
+          <Modal
+            isOpen={importModalIsOpen}
+            onRequestClose={closeImportModal}
+            style={customStylesImportModal}
+            contentLabel="Import Products Modal"
+          >
+            <div>
+              <button onClick={closeImportModal} className="modal-close-btn">
+                <CloseIcon />
+              </button>
+              {!file ? (
+                <div
+                  className="upload-media-div"
+                  style={{ height: "auto" }}
+                  onDragOver={handleDragOver}
+                  onDrop={handleDrop}
+                >
+                  <div
+                    style={{ height: "65vh" }}
+                    onDragEnter={dragEnter}
+                    onDragLeave={dragLeave}
+                  >
+                    <p className="upload-media-head">Import Products</p>
+                    <p className="upload-media-subtext">
+                      Drag and drop file here
+                    </p>
+                    <p className="upload-media-subtext">(.csv)</p>
+
+                    <p className="upload-media-or">OR</p>
+                    <input
+                      type={"file"}
+                      accept={".csv"}
+                      onChange={handleSelectFile}
+                      hidden
+                      ref={inputRef}
+                    />
+                    <button
+                      className="upload-media-btn"
+                      onClick={() => inputRef.current.click()}
+                    >
+                      Select File
+                    </button>
+                    <p
+                      style={{
+                        color: "red",
+                        textAlign: "center",
+                        marginTop: "25px",
+                      }}
+                    >
+                      Ensure that the file contain these columns
+                    </p>
+                    <p
+                      style={{
+                        textTransform: "capitalize",
+                        letterSpacing: "1px",
+                        textAlign: "center",
+                        width: '80%'
+                      }}
+                    >
+                      name, code, offer, price, stock, category, status{" "}
+                      <span>("Available" or "Unavailable")</span>, description
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div
+                  style={{
+                    height: "65vh",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                  }}
+                >
+                  <p
+                    style={{
+                      textAlign: "center",
+                      fontSize: 16,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {file.name}
+                  </p>
+                  <ProgressBar
+                    completed={progress}
+                    bgcolor={"green"}
+                    progressText={progressText}
+                  />
+                  {progress === 100 && (
+                    <button
+                      className="upload-media-btn"
+                      style={{alignSelf: 'center'}}
+                      onClick={createManyProductsDB}
+                    >
+                      Upload
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          </Modal>
+          <Modal
+            isOpen={exportModalIsOpen}
+            onRequestClose={closeExportModal}
+            style={customStylesImportModal}
+            contentLabel="Export Products Modal"
+          >
+            <div>
+              <button onClick={closeExportModal} className="modal-close-btn">
+                <CloseIcon />
+              </button>
+              <div className="upload-media-div" style={{ height: "auto" }}>
+                <div style={{ height: "65vh" }}>
+                  <p className="upload-media-head">Export Products</p>
+
+                  <p className="upload-media-subtext">
+                    Products will be exported in the CSV format
+                  </p>
+
+                  <button
+                    className="upload-media-btn"
+                    // onClick={() => inputRef.current.click()}
+                  >
+                    Export
+                  </button>
+                </div>
+              </div>
+            </div>
+          </Modal>
           <Modal
             isOpen={modalIsOpen}
             onRequestClose={closeModal}
@@ -441,11 +779,11 @@ const Products = () => {
           </Modal>
 
           <div className={"import-export-btns"}>
-            <button>
+            <button onClick={openImportModal}>
               Import{" "}
               <ImportExportIcon style={{ transform: "rotate(180deg)" }} />
             </button>
-            <button>
+            <button onClick={handleExportCSV}>
               Export
               <ImportExportIcon />
             </button>

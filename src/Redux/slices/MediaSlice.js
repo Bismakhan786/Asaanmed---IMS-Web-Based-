@@ -121,7 +121,7 @@ const MediaSlice = createSlice({
         state.deleteMediaInProcess = true;
       })
       .addCase(deleteAllMedia.fulfilled, (state, action) => {
-        state.media = action.payload.media;
+        state.media = [];
         state.deletedCount = action.payload.deletedCount;
         state.loadingMedia = false;
         state.deleteMediaInProcess = false;

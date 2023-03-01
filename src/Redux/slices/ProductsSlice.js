@@ -121,6 +121,25 @@ export const addProduct = createAsyncThunk(
   }
 );
 
+
+export const addManyProducts = createAsyncThunk(
+  "products/create/many",
+  async (productsArray, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/admin/product/create/many`,
+        productsArray,
+        { withCredentials: true }
+      );
+      console.log(response.data);
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
 export const updateProduct = createAsyncThunk(
   "products/update",
   async ({ id, newData }, { rejectWithValue }) => {
@@ -141,6 +160,7 @@ export const updateProduct = createAsyncThunk(
 const initialState = {
   loadingProducts: false,
   creationInProcess: false,
+  createManyLoading: false,
   deletionInProcess: false,
   deleteManyInProcess: false,
   updationInProcess: false,
@@ -157,6 +177,7 @@ const initialState = {
   selectFlag: false,
   error: null,
   creationError: null,
+  createManyError: null,
   deletionError: null,
   deleteManyError: null,
   updationError: null,
@@ -248,6 +269,21 @@ const ProductsSlice = createSlice({
       .addCase(addProduct.rejected, (state, action) => {
         state.creationInProcess = false;
         state.creationError = action.payload;
+      })
+      .addCase(addManyProducts.pending, (state, action) => {
+        state.loadingProducts = true;
+        state.createManyLoading = true;
+      })
+      .addCase(addManyProducts.fulfilled, (state, action) => {
+        state.products = action.payload.products;
+        state.productsCount = action.payload.productCount
+        state.loadingProducts = false;
+        state.createManyLoading = false;
+        state.createManyError = null;
+      })
+      .addCase(addManyProducts.rejected, (state, action) => {
+        state.createManyLoading = false;
+        state.createManyError = action.payload;
       })
       .addCase(updateProduct.pending, (state, action) => {
         state.updationInProcess = true;

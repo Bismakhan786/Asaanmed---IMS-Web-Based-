@@ -19,8 +19,8 @@ import Copy from "@mui/icons-material/Code";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Modal from "react-modal";
 import CloseIcon from "@mui/icons-material/CloseRounded";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Tooltip } from "@mui/material";
-
 
 const customStyles = {
   content: {
@@ -62,10 +62,9 @@ const Media = () => {
     dispatch(getMediaFromAPI());
   }, [dispatch]);
 
-
   function openModal() {
-    setSelectedImages([])
-    setSelectedImagesForDB([])
+    setSelectedImages([]);
+    setSelectedImagesForDB([]);
     setIsOpen(true);
   }
 
@@ -73,6 +72,14 @@ const Media = () => {
     setIsOpen(false);
   }
 
+  const dragEnter = (event) => {
+    console.log(event);
+    event.target.style.backgroundColor = "rgba(95, 158, 160, 0.05)";
+  };
+
+  const dragLeave = (event) => {
+    event.target.style.backgroundColor = "rgba(0, 0, 0, 0.01)";
+  };
 
   const handleDragOver = (event) => {
     event.preventDefault();
@@ -149,7 +156,7 @@ const Media = () => {
   };
 
   const handleDBupload = () => {
-    setIsOpen(false)
+    setIsOpen(false);
     toastId.current = toast("Uploading....", {
       icon: <Spinner size={10} color={"white"} />,
     });
@@ -173,8 +180,8 @@ const Media = () => {
     });
 
     dispatch(deleteAllMedia());
-    setSelectedImagesForDB([])
-    setSelectedImages([])
+    setSelectedImagesForDB([]);
+    setSelectedImages([]);
   };
   return (
     <PanelLayout
@@ -236,81 +243,97 @@ const Media = () => {
               </button>
               {selectedImages.length === 0 ? (
                 <div
-                className="upload-media-div"
-                style={{height: 'auto'}}
-                onDragOver={handleDragOver}
-                onDrop={handleDrop}
-              >
-                <div style={{height: '65vh'}}>
-                  <p className="upload-media-head">Drag and drop files here</p>
-                  <p className="upload-media-subtext">png, jpg, jpeg</p>
-                  <p className="upload-media-or">OR</p>
-                  <input
-                    type={"file"}
-                    multiple
-                    accept={"image/png, image/jpeg, image/jpg"}
-                    onChange={handleSelectImages}
-                    hidden
-                    ref={inputRef}
-                  />
-                  <button
-                    className="upload-media-btn"
-                    onClick={() => inputRef.current.click()}
+                  className="upload-media-div"
+                  style={{ height: "auto" }}
+                  onDragOver={handleDragOver}
+                  onDrop={handleDrop}
+                >
+                  <div
+                    style={{ height: "65vh" }}
+                    onDragEnter={dragEnter}
+                    onDragLeave={dragLeave}
                   >
-                    Select Files
-                  </button>
+                    <p className="upload-media-head">
+                      Drag and drop files here
+                    </p>
+                    <p className="upload-media-subtext">png, jpg, jpeg</p>
+                    <p className="upload-media-or">OR</p>
+                    <input
+                      type={"file"}
+                      multiple
+                      accept={"image/png, image/jpeg, image/jpg"}
+                      onChange={handleSelectImages}
+                      hidden
+                      ref={inputRef}
+                    />
+                    <button
+                      className="upload-media-btn"
+                      onClick={() => inputRef.current.click()}
+                    >
+                      Select Files
+                    </button>
+                  </div>
                 </div>
-              </div>
               ) : (
                 <>
-              <div className="upload-select-more-div" style={{paddingTop: '20px'}}>
-                <input
-                  type={"file"}
-                  multiple
-                  accept={"image/png, image/jpeg, image/jpg"}
-                  onChange={handleSelectImages}
-                  hidden
-                  ref={inputRef}
-                />
-                <button
-                  className="upload-media-btn"
-                  onClick={() => inputRef.current.click()}
-                >
-                  Select More
-                </button>
-                <button className="upload-media-btn" onClick={handleDBupload}>
-                  Upload
-                </button>
-              </div>
-              <div className="parent-image-container" style={{height: '60vh'}}>
-                <div className="images-container">
-                  {selectedImages &&
-                    selectedImages.map((image, index) => (
-                      <div key={index} className="image">
-                        <img
-                          src={image}
-                          height="100"
-                          // style={{ height: "100px", width: "auto", }}
-                        />
-                        <button
-                          onClick={() => {
-                            setSelectedImages(
-                              selectedImages.filter((e) => e !== image)
-                            );
-                            setSelectedImagesForDB(
-                              selectedImagesForDB.filter((v, i) => i !== index)
-                            );
-                          }}
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    ))}
-                </div>
-              </div>
-            </>
+                  <div
+                    className="upload-select-more-div"
+                    style={{ paddingTop: "20px" }}
+                  >
+                    <input
+                      type={"file"}
+                      multiple
+                      accept={"image/png, image/jpeg, image/jpg"}
+                      onChange={handleSelectImages}
+                      hidden
+                      ref={inputRef}
+                    />
+                    <button
+                      className="upload-media-btn"
+                      onClick={() => inputRef.current.click()}
+                    >
+                      Select More
+                    </button>
+                    <button
+                      className="upload-media-btn"
+                      onClick={handleDBupload}
+                    >
+                      Upload
+                    </button>
+                  </div>
+                  <div
+                    className="parent-image-container"
+                    style={{ height: "60vh" }}
+                  >
+                    <div className="images-container">
+                      {selectedImages &&
+                        selectedImages.map((image, index) => (
+                          <div key={index} className="image">
+                            <img
+                              src={image}
+                              height="100"
+                              // style={{ height: "100px", width: "auto", }}
+                            />
+                            <button
+                              onClick={() => {
+                                setSelectedImages(
+                                  selectedImages.filter((e) => e !== image)
+                                );
+                                setSelectedImagesForDB(
+                                  selectedImagesForDB.filter(
+                                    (v, i) => i !== index
+                                  )
+                                );
+                              }}
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                </>
               )}
-              
             </div>
           </Modal>
           {loadingMedia ? (
@@ -326,10 +349,7 @@ const Media = () => {
                   hidden
                   ref={inputRef}
                 />
-                <button
-                  className="upload-media-btn"
-                  onClick={openModal}
-                >
+                <button className="upload-media-btn" onClick={openModal}>
                   Upload More
                 </button>
                 <button
@@ -352,17 +372,18 @@ const Media = () => {
                         }}
                       />
 
-                      <CopyToClipboard
-                        text={image.url}
-                        onCopy={() => setCopied(true)}
-                      >
-                        <button onClick={() => {}}>
-                          Copy URL <Copy />
-                        </button>
-                      </CopyToClipboard>
-                      <button onClick={handleDeleteImage(image._id)}>
-                        Delete
-                      </button>
+                      <div>
+                        <CopyToClipboard
+                          text={image.url}
+                          onCopy={() => setCopied(true)}
+                        >
+                          <Copy className={"copu-url-button"} />
+                        </CopyToClipboard>
+                        <DeleteIcon
+                          onClick={handleDeleteImage(image._id)}
+                          className="delete-image-button"
+                        />
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -374,7 +395,7 @@ const Media = () => {
               onDragOver={handleDragOver}
               onDrop={handleDrop}
             >
-              <div>
+              <div onDragEnter={dragEnter} onDragLeave={dragLeave}>
                 <p className="upload-media-head">Drag and drop files here</p>
                 <p className="upload-media-subtext">png, jpg, jpeg</p>
                 <p className="upload-media-or">OR</p>
