@@ -1,5 +1,6 @@
 .Header{
     position: absolute;
+    z-index: 50;
     top: 0%;
     padding: 1.5% 5%;
     width: 90%;
@@ -12,22 +13,100 @@
     background-color: transparent;
 }
 
-.Header > p {
-    color: rgba(255, 255, 255, 0.8);
-    font-weight: bold;
+.Header a{
+    text-decoration: none;
+}
+
+.Header >a > p {
+    /* color: rgba(255, 255, 255, 0.8); */
+    color: rgba(0, 0, 0, 0.6);
+    font-weight: bolder;
     letter-spacing: 0.2em;
-    font-size: calc(1px + 2vmin);
+    font-size: calc(5px + 2vmin);
+    cursor: pointer;
+    transition: all 0.5s ease;
+}
+
+.Header > a >p:hover{
+    color: #e37e38;
+
 }
 
 
 .Header > div > a {
     text-decoration: none;
-    font-size: calc(1px + 1.6vmin);
-    color: rgba(255, 255, 255, 0.7);
+    font-size: 1em;
+    /* color: rgba(255, 255, 255, 0.7); */
+    color: rgba(0, 0, 0, 0.6);
     margin-left: calc(4px + 2vmin);
     transition: all 0.5s ease;
+    cursor: pointer;
 }
 
 .Header > div > a:hover{
     color: #e37e38;
+    transform: scale(1.5);
 }
+
+.menu-icon{
+    display: none;
+}
+
+.menu-icon > svg{
+    font-size: 1.5em;
+    transition: all 0.5s ease;
+}
+
+.menu-icon > svg:hover{
+    color: #e37e38;
+}
+
+.hidden-menu{
+    z-index: 10;
+    position: fixed;
+    padding: 1.5rem 0.5rem;
+    top: 3rem;
+    right: 0;
+    width: 250px;
+    height: 300px;
+    background-color: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    transition: all 0.5s ease;
+    animation: showMenu 1s ease-in-out;
+}
+
+.hidden-menu > a{
+    text-transform: uppercase;
+    display: inline-block ;
+    margin-bottom: 10px;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3) ;
+}
+
+@keyframes showMenu {
+    from {
+        opacity: 0;
+        top: 2rem;
+    }
+    to{
+        opacity: 1;
+        top: 3rem;
+    }
+}
+
+@media screen and (max-width: 380px) {
+  
+
+    .menu{
+        display: none !important;
+    }
+
+    .menu-icon{
+        display: flex;
+
+    }
+    
+    
+  }

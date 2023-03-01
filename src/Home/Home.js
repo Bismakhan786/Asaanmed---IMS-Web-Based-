@@ -13,69 +13,64 @@ import atco from "../companiesLogo/atco.png";
 import martin from "../companiesLogo/martin.png";
 import searle from "../companiesLogo/searle.png";
 
-const plans = [
-  {
-    name: "B2C",
-    abbr: "Business-to-Consumer",
-    desc: "We provide a responsive, user-friendly, easily configured application for both Play Store and AppStore, where one can",
-    listOPtions: [
-      "Browse medicines of all categories",
-      "Place instant order",
-      "Get their order delivered in approximately 2 hours",
-    ],
-    image: b2b,
-  },
-  {
-    name: "B2B",
-    abbr: "Business-to-Business",
-    desc: "Now, Physicist and medical store retailers don't have to worry about developing an online platform for their shops. We are prividing them this facility through our application. All they have to do is",
-    listOPtions: [
-      "Register their shop",
-      "Complete verification Process",
-      "Sell medicines and earn profits",
-    ],
-    image: b2b,
-  },
-];
-
+const plan = {
+  name: "B2B",
+  abbr: "Business-to-Business",
+  desc: "Now, Physicist and medical store retailers don't have to worry about developing an online platform for their shops. We are prividing them this facility through our application. All they have to do is",
+  listOPtions: [
+    "Register their shop",
+    "Complete verification Process",
+    "Sell medicines and earn profits",
+  ],
+  image: b2b,
+};
 const Home = () => {
   return (
     <>
       <div className="banner">
+        <div className="background">
+          <div>
+            <img src="/bg2.png" />
+          </div>
+          <div>
+            <img src="/bg-img2.png" />
+          </div>
+        </div>
         <img src={logo} />
         <p>Hellow World</p>
         <h1>WELCOME TO ASAANMED</h1>
-        <span>Want to know about our plans and services?</span>
-        <span>Happy Scroll 😊</span>
+        <span>Business to grow business..</span>
+        <span>Our aim is to accelerate the process of purchasing for retailers</span>
 
-        <a href="#container">
+        {/* <a href="#container">
           <button>
             <ExpandMoreRoundedIcon />
           </button>
-        </a>
+        </a> */}
       </div>
       <div id="container">
-        <h2 className="plansHeading">Our Plans</h2>
+        <h2 className="plansHeading">Plan</h2>
         <div className="carousal">
-          <Carousel>
+          {/* <Carousel >
             {plans.map((plan, index) => (
-              <div key={index} className="carousal-items">
-                <div className="carousal-details">
-                  <h2>{plan.name}</h2>
-                  <span>{plan.abbr}</span>
-                  <p>{plan.desc}</p>
-                  <ul>
-                    {plan.listOPtions.map((o, i) => (
-                      <li key={i}>{o}</li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="carousal-img">
-                  <img src={plan.image} />
-                </div>
-              </div>
+              
             ))}
-          </Carousel>
+          </Carousel> */}
+          <div className="carousal-items">
+            <div className="carousal-details">
+              <h2>{plan.name}</h2>
+              <span>{plan.abbr}</span>
+              <p>{plan.desc}</p>
+              <ul>
+                {plan.listOPtions.map((o, i) => (
+                  <li key={i}>{o}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="carousal-img">
+              <img src={plan.image} />
+            </div>
+          </div>
         </div>
         <h2 className="plansHeading">Products From</h2>
         <div className="partners-logo">
@@ -88,8 +83,6 @@ const Home = () => {
             <img src={searle} />
             <img src={abbott} />
             <img src={atco} />
-          </div>
-          <div>
             <img src={bosch} />
             <img src={getz} />
             <img src={bh} />

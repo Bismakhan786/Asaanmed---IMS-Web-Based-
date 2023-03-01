@@ -29,10 +29,85 @@
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
+
+.product-image-btn{
+
+  background-color: white;
+  color: rgba(0, 0, 0, 0.6);
+  font: 300 1vmax Arial;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
+  outline: none;
+  transition: all 0.5s ease;
+  cursor: pointer;
+}
+
+.select-from-media-img{
+  background-color: rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0.3em !important;
+  margin-bottom: 0.1em !important;
+}
+
+.select-from-media-img > img{
+  margin-bottom: 0.5em !important;
+  padding: 0 !important;
+}
+
+.select-from-media-img > p{
+  width: 85%;
+  word-break: break-all;
+  margin: 0;
+  padding: 0;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.select-from-media-img:hover{
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+.product-image-btn:hover:enabled{
+  background-color: #e37e38;
+  color: white;
+  border: 1px solid #e37e38;
+}
+
+.product-image-btn:disabled{
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.select-image > button {
+  background-color: transparent;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  font: 300 0.8vmax cursive;
+  color: rgba(0, 0, 0, 0.6);
+  transition: all 0.5s ease;
+}
+
+.select-image > button:hover:enabled{
+  color: #e37e38;
+  transform: scale(1.01);
+}
+
+.select-image >button:disabled{
+  color: rgba(0, 0, 0, 0.35);
+}
+
 .select-image > div > input[type="file"] {
   padding: 0;
   display: flex;
 }
+
+
 
 .select-image > div > input::file-selector-button,
 .updateImage > input::file-selector-button {

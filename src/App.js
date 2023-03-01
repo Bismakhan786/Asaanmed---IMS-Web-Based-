@@ -23,6 +23,7 @@ import CategoryDetails from "./components/Panels/Categories/CategoryDetails";
 import Home from "./Home/Home";
 import Footer from "./components/Footer/Footer";
 import Media from "./components/Panels/Media/Media";
+import Register from "./components/Register/Register";
 
 function App() {
   return (
@@ -40,9 +41,18 @@ function App() {
               </>
             }
           />
-          <Route exact path="/about" element={<About />} />
-          <Route exact path="/contact" element={<Contact />} />
+          <Route exact path="/about" element={<>
+          <Header/>
+          <About/>
+          <Footer/>
+          </>} />
+          <Route exact path="/contact" element={<>
+          <Header/>
+          <Contact/>
+          <Footer/>
+          </>} />
 
+          <Route exact path="/am-regs-admin-authority" element={<Register />} />
           <Route exact path="/admin/login" element={<Login />} />
           <Route element={<ProtectedRoute />}>
             <Route exact path="/admin/dashboard" element={<Dashboard />} />

@@ -12,18 +12,36 @@ import { Spinner } from "react-activity";
 import "react-activity/dist/Spinner.css";
 import SuccessIcon from "@mui/icons-material/CheckCircleRounded";
 import ErrorIcon from "@mui/icons-material/ErrorRounded";
+import { getMediaFromAPI } from "../../../Redux/slices/MediaSlice";
+import Modal from "react-modal";
+import CloseIcon from "@mui/icons-material/CloseRounded";
+
+const customStyles = {
+  content: {
+    top: "15%",
+    left: "15%",
+    right: "15%",
+    bottom: "10%",
+    // marginBottom: "-20%",
+    // transform: "translate(-50%, -50%)",
+  },
+};
+
+Modal.setAppElement("#root");
 
 const CreateProduct = () => {
   const toastId = useRef(null);
 
   const dispatch = useDispatch();
   const { loading, categories } = useSelector((state) => state.categories);
+  const { loadingMedia, media } = useSelector((state) => state.media);
   const { creationInProcess, creationError } = useSelector(
     (state) => state.products
   );
 
   useEffect(() => {
     dispatch(getAllCategories());
+    dispatch(getMediaFromAPI());
   }, [dispatch]);
 
   let categoryOptions = [];
@@ -56,9 +74,35 @@ const CreateProduct = () => {
   const [afterDisc, setAfterDisc] = useState(price);
   const [desc, setDesc] = useState("");
   const [image, setImage] = useState("");
+  const [mediaImage, setMediaImage] = useState(null)
   const [imagePreview, setImagePreview] = useState("/defaultProduct.png");
-  const [category, setCategory] = useState(categoryOptions.length > 0 && categoryOptions[0]);
+  const [category, setCategory] = useState(
+    categoryOptions.length > 0 && categoryOptions[0]
+  );
   const [status, setStatus] = useState(statusOptions[0]);
+  const [showMedia, setShowMedia] = useState(false);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const inputRef = useRef(null);
+
+  function openModal() {
+    setShowMedia(false)
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  const handleSelectImageFromMedia = (public_id, url) => () => {
+    setMediaImage({
+      public_id,
+      url
+    })
+    setImagePreview(url)
+    setImage(url)
+
+    setIsOpen(false)
+  }
 
   const uploadImage = (e) => {
     const reader = new FileReader();
@@ -71,6 +115,8 @@ const CreateProduct = () => {
     };
 
     reader.readAsDataURL(e.target.files[0]);
+    setIsOpen(false)
+
   };
 
   const submitForm = (e) => {
@@ -80,8 +126,8 @@ const CreateProduct = () => {
       icon: <Spinner size={10} color={"white"} />,
     });
 
-    let product = {}
-    if(image){
+    let product = {};
+    if (image) {
       product = {
         name,
         code,
@@ -92,8 +138,9 @@ const CreateProduct = () => {
         status: status.value,
         stock,
         cat: category?.id,
-      }
-    }else{
+      };
+    } 
+    else {
       product = {
         name,
         code,
@@ -103,21 +150,21 @@ const CreateProduct = () => {
         status: status.value,
         stock,
         cat: category?.id,
-      }
+      };
     }
 
     console.log(product);
     dispatch(addProduct(product));
-    setName("")
-    setCode("")
-    setOffer("")
-    setPrice("")
-    setDesc("")
-    setStatus({})
-    setStock("")
-    setCategory({})
-    setImage("")
-    setAfterDisc("")
+    setName("");
+    setCode("");
+    setOffer("");
+    setPrice("");
+    setDesc("");
+    setStatus({});
+    setStock("");
+    setCategory({});
+    setImage("");
+    setAfterDisc("");
   };
 
   return (
@@ -143,15 +190,95 @@ const CreateProduct = () => {
                 autoClose: 1000,
               })}
             <CustomToast />
-            <div className="select-image">
+            <Modal
+              isOpen={modalIsOpen}
+              onRequestClose={closeModal}
+              style={customStyles}
+              contentLabel="Upload More Modal"
+            >
               <div>
-                <input
-                  type={"file"}
-                  name={"image"}
-                  disabled={creationInProcess}
-                  accept={"image/png, image/jpeg, image/jpg"}
-                  onChange={uploadImage}
-                />
+                <button onClick={closeModal} className="modal-close-btn">
+                  <CloseIcon />
+                </button>
+                {!showMedia ? (
+                  <div
+                    className="upload-media-div"
+                    style={{ height: "auto" }}
+                    // onDragOver={handleDragOver}
+                    // onDrop={handleDrop}
+                  >
+                    <div
+                      style={{ height: "65vh", backgroundColor: "transparent" }}
+                      // onDragEnter={dragEnter}
+                      // onDragLeave={dragLeave}
+                    >
+                      <p
+                        style={{
+                          fontWeight: "bold",
+                          textAlign: "center",
+                          fontSize: 18,
+                        }}
+                      >
+                        Product Image
+                      </p>
+                      <button
+                        className="product-image-btn"
+                        onClick={() => setShowMedia(true)}
+                      >
+                        Select From Media
+                      </button>
+                      <input
+                        type={"file"}
+                        name={"image"}
+                        disabled={creationInProcess}
+                        accept={"image/png, image/jpeg, image/jpg"}
+                        onChange={uploadImage}
+                        hidden
+                        ref={inputRef}
+                      />
+                      <button
+                        className="product-image-btn"
+                        onClick={() => inputRef.current.click()}
+                      >
+                        Select From Device Files
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                      <p style={{textAlign: 'center', fontWeight: 'bold', fontSize: 18}}>Media Files</p>
+                    <div
+                      className="parent-image-container"
+                      style={{ height: "60vh" }}
+                    >
+                      <div className="images-container">
+                        {media &&
+                          media.map((image, index) => (
+                            <div key={index} className="image select-from-media-img" onClick={handleSelectImageFromMedia(image.public_id, image.url)}>
+                              <img
+                                src={image.url}
+                                height="100"
+                                // style={{ height: "100px", width: "auto", }}
+                              />
+                              <p>{image.name}</p>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            </Modal>
+            <div className="select-image">
+              <button onClick={openModal}>Select Image</button>
+              <div>
+                {/* <input
+                    type={"file"}
+                    name={"image"}
+                    disabled={creationInProcess}
+                    accept={"image/png, image/jpeg, image/jpg"}
+                    onChange={uploadImage}
+                  /> */}
               </div>
               <div>
                 <img
@@ -263,7 +390,9 @@ const CreateProduct = () => {
                 disabled={creationInProcess}
                 name={"cat"}
                 placeholder={"-- Category --"}
-                onChange={(e) => setCategory({ id: e.id, name: e.value, label: e.value })}
+                onChange={(e) =>
+                  setCategory({ id: e.id, name: e.value, label: e.value })
+                }
               />
             </div>
             <div>

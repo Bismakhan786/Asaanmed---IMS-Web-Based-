@@ -1,11 +1,60 @@
+.background{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* background-color: aqua; */
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  justify-content: space-between;
+  align-items: center;
+  overflow-x: hidden;
+}
+
+.background >div:first-child >img{
+  opacity: 0.2;
+  transition: all 0.5s ease;
+  transform: scale(1.5);
+  margin-left: 50px;
+
+  /* animation: zoom 5s infinite -2s linear; */
+}
+
+@keyframes zoom {
+  from {
+    transform: scale(1.01);
+  }
+  to {
+    transform: scale(1.5);
+  }
+}
+
+.background > div:last-child > img{
+  opacity: 0.05;
+  transition: all 0.5s ease;
+  animation: spin 12s infinite -2s linear;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+  
+}
+
 .banner {
-  background-image: linear-gradient(to right, #565600, #000000);
+  /* background-image: linear-gradient(to right, #565600, #000000); */
   height: 100vmin;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: white;
+    color: rgba(0, 0, 0, 0.6);
+    /* color: white; */
 }
 
 .banner > img {
@@ -23,13 +72,15 @@
 .banner > span {
   margin-bottom: 0.3vmax;
   font: 300 1vmax "Verdana";
-  color: rgba(255, 255, 255, 0.7);
+    color: rgba(0, 0, 0, 0.6);
+    /* color: rgba(255, 255, 255, 0.7); */
 }
 
 .banner > a > button {
   margin-top: 5vmax;
   background-color: transparent;
-  color: white;
+    color: rgba(0, 0, 0, 0.6);
+    /* color: white; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -37,13 +88,15 @@
   padding: 0.2vmax;
   outline: none;
   border: none;
-  border: 1px solid white;
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  ;
   transition: all 0.5s ease;
 }
 
 .banner > a > button:hover {
-  background-color: white;
-  color: #000000;
+  background-color: #e37e38;
+  border: 1px solid #e37e38;
+  color: white;
   cursor: pointer;
 }
 
@@ -51,7 +104,7 @@
   font-size: 2vmax;
 }
 
-.banner::after {
+/* .banner::after {
   content: "";
   width: 100vw;
   max-width: 100%;
@@ -61,7 +114,7 @@
   top: 0%;
   left: 0%;
   clip-path: polygon(100% 75%, 0% 100%, 100% 100%);
-}
+} */
 
 /* Main Working */
 
@@ -86,6 +139,7 @@
 .carousal-items {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  
   align-items: center;
 }
 
@@ -138,10 +192,37 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .partners-logo > div > img {
-  width: 6vmax;
+  width: 5vmax;
   height: auto;
   margin: 1vmax;
+}
+
+
+@media screen and (max-width: 380px) {
+  
+  .carousal-items{
+    display: flex;
+  flex-direction: column;  
+  justify-content: center;
+  }
+
+  .carousal-details{
+    border-right: none;
+    border-bottom:  1px solid rgba(0, 0, 0, 0.2);
+  }
+  
+}
+
+
+
+@media screen and (max-width: 900px) {
+  
+}
+
+@media screen and (max-width: 1024px) and (min-width: 900px){
+  
 }
