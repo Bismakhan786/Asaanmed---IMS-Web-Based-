@@ -7,6 +7,7 @@ function Header() {
     const [menu, showMenu] = useState(false)
   return (
     <div className="Header">
+      <div className="logo-text">
       <Link to={"/"}>
       <p>ASAANMED Ltd.</p>
       </Link>
@@ -30,6 +31,8 @@ function Header() {
       </div>
 
       )}
+      </div>
+      
     </div>
   );
 }

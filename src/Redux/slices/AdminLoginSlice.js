@@ -137,11 +137,11 @@ const AdminLoginSlice = createSlice({
         state.loading = true;
       })
       .addCase(logoutAdmin.fulfilled, (state, action) => {
-        state.loading = false;
         state.userInfo = {};
         state.userToken = null;
-        state.success = true;
         state.isAdmin = false;
+        state.loading = false;
+        state.success = true;
       })
       .addCase(logoutAdmin.rejected, (state, action) => {
         state.loading = false;

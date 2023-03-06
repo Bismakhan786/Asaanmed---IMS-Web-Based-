@@ -126,45 +126,59 @@ const CreateProduct = () => {
       icon: <Spinner size={10} color={"white"} />,
     });
 
-    let product = {};
-    if (image) {
-      product = {
-        name,
-        code,
-        offer,
-        price,
-        desc,
-        image,
-        status: status.value,
-        stock,
-        cat: category?.id,
-      };
-    } 
-    else {
-      product = {
-        name,
-        code,
-        offer,
-        price,
-        desc,
-        status: status.value,
-        stock,
-        cat: category?.id,
-      };
+    if(!name || !code || !offer || !price || !desc || !status || !category || !stock){
+      toast.update(toastId.current, {
+        render: "Please provide product details",
+        type: toast.TYPE.ERROR,
+        icon: <ErrorIcon className="errorIcon" />,
+        autoClose: 1000,
+      })
+    }
+    else{
+      let product = {};
+      if (image) {
+        product = {
+          name,
+          code,
+          offer,
+          price,
+          desc,
+          image,
+          status: status.value,
+          stock,
+          cat: category?.id,
+        };
+      } 
+      else {
+        product = {
+          name,
+          code,
+          offer,
+          price,
+          desc,
+          status: status.value,
+          stock,
+          cat: category?.id,
+        };
+      }
+  
+      console.log(product);
+      dispatch(addProduct(product));
+      setName("");
+      setCode("");
+      setOffer("");
+      setPrice("");
+      setDesc("");
+      setStatus({});
+      setStock("");
+      setCategory({});
+      setImage("");
+      setAfterDisc("");
     }
 
-    console.log(product);
-    dispatch(addProduct(product));
-    setName("");
-    setCode("");
-    setOffer("");
-    setPrice("");
-    setDesc("");
-    setStatus({});
-    setStock("");
-    setCategory({});
-    setImage("");
-    setAfterDisc("");
+    
+
+    
   };
 
   return (

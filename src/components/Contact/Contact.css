@@ -1,3 +1,52 @@
 .contact{
     background-image: linear-gradient(to right,  rgba(0, 0, 0, 0.2),  rgb(227, 126, 56, 0.5));
+    max-height: 60vh;
+    display: flex !important;
+flex-direction: column !important;
+justify-content: center !important;
+align-items: center !important;
+}
+
+.contact>div{
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.contact>div>h1, .contact>div>span{
+    text-align: center;
+}
+
+.contact-content{
+    max-width: 1460px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.contact-content>p{
+    width: 80%;
+
+    text-align: center;
+    line-height: 180%;
+    font: 300 large Arial;
+    color: rgba(0, 0, 0, 0.8);
+}
+
+
+
+@media screen and (max-width: 600px) {
+    .contact-content{
+
+        padding: 15px;
+    }
+
+    .contact-content>p{
+        text-align: justify;
+        width: 90%;
+    }
+    
 }

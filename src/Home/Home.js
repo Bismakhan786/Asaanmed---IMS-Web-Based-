@@ -1,8 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Home.css";
-import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
-import Carousel from "react-material-ui-carousel";
-import logo from "../logo.png";
 import b2b from "../b2b.png";
 import abbott from "../companiesLogo/abbott.jpg";
 import bosch from "../companiesLogo/bosch.png";
@@ -12,50 +9,63 @@ import bh from "../companiesLogo/bh.jpg";
 import atco from "../companiesLogo/atco.png";
 import martin from "../companiesLogo/martin.png";
 import searle from "../companiesLogo/searle.png";
+import {Link} from "react-router-dom"
 
 const plan = {
   name: "B2B",
   abbr: "Business-to-Business",
-  desc: "Now, Physicist and medical store retailers don't have to worry about developing an online platform for their shops. We are prividing them this facility through our application. All they have to do is",
-  listOPtions: [
-    "Register their shop",
-    "Complete verification Process",
-    "Sell medicines and earn profits",
-  ],
+  desc: `
+  ASAANMED was founded by two young Entrepreneurs who were inspired
+  by a desire to serve the people of Karachi an affordable and
+  accessible alternative to buying medicines.
+`,
+  listOPtions: ["300+ Medical products", "Order 24/7", "Get next day delivery"],
   image: b2b,
 };
 const Home = () => {
+  useEffect(() => {
+
+    window.scrollTo({top: 0, left: 0, behavior: 'smooth'})
+  }, [])
   return (
     <>
       <div className="banner">
-        <div className="background">
-          <div>
-            <img src="/bg2.png" />
-          </div>
-          <div>
-            <img src="/bg-img2.png" />
-          </div>
+        
+        <div>
+          <img src={"/icon.png"} alt=""/>
+          <h1>WELCOME TO ASAANMED</h1>
+          <span>Business to grow business..</span>
+          <span>
+            Our aim is to accelerate and ease the purchasing process for
+            retailers
+          </span>
+          <Link to={"/about"}>
+          
+          <button>Know More</button>
+          </Link>
         </div>
-        <img src={logo} />
-        <p>Hellow World</p>
-        <h1>WELCOME TO ASAANMED</h1>
-        <span>Business to grow business..</span>
-        <span>Our aim is to accelerate the process of purchasing for retailers</span>
-
-        {/* <a href="#container">
-          <button>
-            <ExpandMoreRoundedIcon />
-          </button>
-        </a> */}
+        <div>
+            <img src="/bg.png" alt=""/>
+          
+        </div>
       </div>
       <div id="container">
+        <div className="cards-cont">
+          <div>
+            <p>300+</p>
+            <p>Products</p>
+          </div>
+          <div>
+            <p>PKR. 1B+</p>
+            <p>Volume</p>
+          </div>
+          <div>
+            <p>50+</p>
+            <p>Employees</p>
+          </div>
+        </div>
         <h2 className="plansHeading">Plan</h2>
         <div className="carousal">
-          {/* <Carousel >
-            {plans.map((plan, index) => (
-              
-            ))}
-          </Carousel> */}
           <div className="carousal-items">
             <div className="carousal-details">
               <h2>{plan.name}</h2>
@@ -68,29 +78,21 @@ const Home = () => {
               </ul>
             </div>
             <div className="carousal-img">
-              <img src={plan.image} />
+              <img src={plan.image} alt=""/>
             </div>
           </div>
         </div>
         <h2 className="plansHeading">Products From</h2>
         <div className="partners-logo">
           <div>
-            <img src={bosch} />
-            <img src={getz} />
-            <img src={bh} />
-            <img src={martin} />
-            <img src={hilton} />
-            <img src={searle} />
-            <img src={abbott} />
-            <img src={atco} />
-            <img src={bosch} />
-            <img src={getz} />
-            <img src={bh} />
-            <img src={martin} />
-            <img src={hilton} />
-            <img src={searle} />
-            <img src={abbott} />
-            <img src={atco} />
+            <img src={bosch} alt=""/>
+            <img src={getz} alt=""/>
+            <img src={bh} alt=""/>
+            <img src={martin} alt=""/>
+            <img src={hilton} alt=""/>
+            <img src={searle} alt=""/>
+            <img src={abbott} alt=""/>
+            <img src={atco} alt=""/>
           </div>
         </div>
       </div>

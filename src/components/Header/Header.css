@@ -1,24 +1,29 @@
 .Header{
-    position: absolute;
-    z-index: 50;
+    position: sticky;
+    z-index: 100;
     top: 0%;
-    padding: 1.5% 5%;
-    width: 90%;
-    max-width: 100%;
-    overflow-x: hidden;
+    background-color: white;
+    /* background-image: linear-gradient(to right,  lightgray,  rgb(230, 158, 107)); */
+    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.2);
+
+}
+
+.Header > div{
+    max-width: 1460px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: auto;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    background-color: transparent;
 }
 
 .Header a{
     text-decoration: none;
 }
 
-.Header >a > p {
-    /* color: rgba(255, 255, 255, 0.8); */
+.logo-text > a > p {
     color: rgba(0, 0, 0, 0.6);
     font-weight: bolder;
     letter-spacing: 0.2em;
@@ -27,24 +32,23 @@
     transition: all 0.5s ease;
 }
 
-.Header > a >p:hover{
-    color: #e37e38;
+.logo-text > a >p:hover{
+    color: #b84b39;
 
 }
 
 
-.Header > div > a {
+.menu > a {
     text-decoration: none;
-    font-size: 1em;
-    /* color: rgba(255, 255, 255, 0.7); */
+    font-size: 1.2em;
     color: rgba(0, 0, 0, 0.6);
     margin-left: calc(4px + 2vmin);
     transition: all 0.5s ease;
     cursor: pointer;
 }
 
-.Header > div > a:hover{
-    color: #e37e38;
+.menu > a:hover{
+    color: #b84b39;
     transform: scale(1.5);
 }
 
@@ -65,7 +69,7 @@
     z-index: 10;
     position: fixed;
     padding: 1.5rem 0.5rem;
-    top: 3rem;
+    top: 4.7rem;
     right: 0;
     width: 250px;
     height: 300px;
@@ -78,6 +82,8 @@
 }
 
 .hidden-menu > a{
+    color: rgba(0, 0, 0, 0.8);
+    text-decoration: none;
     text-transform: uppercase;
     display: inline-block ;
     margin-bottom: 10px;
@@ -88,16 +94,20 @@
 @keyframes showMenu {
     from {
         opacity: 0;
-        top: 2rem;
+        top: 4rem;
     }
     to{
         opacity: 1;
-        top: 3rem;
+        top: 4.7rem;
     }
 }
 
-@media screen and (max-width: 380px) {
+@media screen and (max-width: 600px) {
   
+    .Header > div{
+        padding: 15px;
+        margin: auto;
+    }
 
     .menu{
         display: none !important;
@@ -108,5 +118,13 @@
 
     }
     
+    
+  }
+
+  @media screen and (max-width: 1500px) and (min-width: 600px) {
+    .Header > div{
+        padding: 15px 20px;
+        margin: auto;
+    }
     
   }

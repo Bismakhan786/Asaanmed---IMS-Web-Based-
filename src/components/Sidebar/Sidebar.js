@@ -1,6 +1,5 @@
 import React from "react";
 import "./Sidebar.css";
-import logo from "../../logo.png";
 import { Link } from "react-router-dom";
 import TreeView from "@mui/lab/TreeView";
 import TreeItem from "@mui/lab/TreeItem";
@@ -12,7 +11,6 @@ import AddIcon from "@mui/icons-material/Add";
 import PeopleIcon from "@mui/icons-material/People";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import MediaIcon from "@mui/icons-material/FilterVintage";
-import DiscountIcon from '@mui/icons-material/Discount'
 import CategoriesIcon from '@mui/icons-material/Widgets';
 import LogoutRounded from "@mui/icons-material/LogoutRounded";
 import { useDispatch } from "react-redux";
@@ -30,7 +28,7 @@ function Sidebar() {
   return (
     <div className="sidebar">
       <Link to={"/"}>
-        <img src={logo} />
+        <img src={"/icon.png"} alt=""/>
       </Link>
       <Link to={"/admin/dashboard"}>
         <p>

@@ -11,11 +11,8 @@ import DashboardIcon from "@mui/icons-material/DashboardRounded";
 import ImportExportIcon from "@mui/icons-material/ImportExport";
 import PeopleIcon from "@mui/icons-material/People";
 import ListAltIcon from "@mui/icons-material/ListAlt";
-import DiscountIcon from "@mui/icons-material/Discount";
 import CategoriesIcon from "@mui/icons-material/Widgets";
-import ExpensesIcon from "@mui/icons-material/AccountBalanceWallet";
 import LogoutRounded from "@mui/icons-material/LogoutRounded";
-import logo from "../../logo.png";
 import { useDispatch } from "react-redux";
 import { logoutAdmin } from "../../Redux/slices/AdminLoginSlice";
 import { MdPersonOutline } from "react-icons/md";
@@ -44,7 +41,7 @@ const PanelLayout = ({ MainLayout, PanelName, ShowProfileIcon = true }) => {
       <Sidebar />
       <div className="mobile-text">
         <div style={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
-        <img src={logo} className="logo" />
+        <img src={"/icon.png"} className="logo" alt=""/>
 
         </div>
         <p style={{textAlign: 'center'}}>Open in Laptop or PC for best user experience..</p>
@@ -55,7 +52,8 @@ const PanelLayout = ({ MainLayout, PanelName, ShowProfileIcon = true }) => {
           <Typography component={"h1"}>{PanelName}</Typography>
           <img
             className="nav-logo"
-            src={logo}
+            src={"/icon.png"}
+            alt=""
             style={{
               width: 40,
               height: 40,

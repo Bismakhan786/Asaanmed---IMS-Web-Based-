@@ -98,7 +98,7 @@ const Orders = () => {
   const columns = [
     "ID",
     "Customer Name",
-    "Email",
+    "Contact",
     "Status",
     "Shipping",
     "Bill",
@@ -112,7 +112,7 @@ const Orders = () => {
       rows.push({
         id: order._id,
         name: order.user?.name,
-        email: order.user?.email,
+        contact: order.user?.contact,
         status: order.orderStatus,
         shipping: order.shippingPrice,
         bill: order.totalPrice,

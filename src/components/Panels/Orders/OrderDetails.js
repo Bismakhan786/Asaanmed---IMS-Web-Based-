@@ -65,7 +65,7 @@ const OrderDetails = () => {
   orderItems &&
     orderItems.forEach((item) => {
       let productPrice =
-        item.product?.price - item.product?.price * item.product?.disc;
+        item.product?.price - item.product?.price * (item.product?.offer / 100);
       let itemTotal = productPrice * item.qty;
       orderTotal += itemTotal;
     });
@@ -108,7 +108,7 @@ const OrderDetails = () => {
     }
   });
   const [stepNumber, setStepNumber] = useState(defaultStepNumber);
-  const [completed, setCompleted] = useState([]);
+  const [completed, setCompleted] = useState([false, false, false]);
   const [active, setActive] = useState([]);
   const [disableUpdateStatus, setDisableUpdateStatus] = useState(
     status === "Delivered" || status === "Cancelled" ? true : false
@@ -183,7 +183,15 @@ const OrderDetails = () => {
                   (opt) => opt.value === status
                 )}
                 disabled={disableUpdateStatus}
-                options={statusOptions}
+                options={
+                  order.orderStatus === "Processing"
+                    ? statusOptions.filter(
+                        (o) => o.value === "Shipped" || o.value === "Cancelled"
+                      )
+                    : order.orderStatus === "Shipped"
+                    ? statusOptions.filter((o) => o.value === "Delivered")
+                    : null
+                }
                 name={"status"}
                 placeholder={"-- Status --"}
                 onChange={(e) => setStatus(e.value)}
@@ -201,7 +209,9 @@ const OrderDetails = () => {
                 <Step
                   key={label}
                   completed={
-                    completed[index] || (status === "Delivered" && true)
+                    order.orderStatus === "Shipped"
+                      ? completed[index - 1]
+                      : status === "Delivered" && true
                   }
                   active={active[index]}
                 >
@@ -240,7 +250,7 @@ const OrderDetails = () => {
                       <th>S.No</th>
                       <th>Name</th>
                       <th style={{ textAlign: "right" }}>Price</th>
-                      <th style={{ textAlign: "right" }}>Discount</th>
+                      <th style={{ textAlign: "right" }}>Offer</th>
                       <th style={{ textAlign: "right" }}>Quantity</th>
                       <th style={{ textAlign: "right" }}>Total</th>
                     </tr>
@@ -255,12 +265,13 @@ const OrderDetails = () => {
                             {item.product?.price}
                           </td>
                           <td style={{ textAlign: "right" }}>
-                            {item.product?.disc}
+                            {item.product?.offer}%
                           </td>
                           <td style={{ textAlign: "right" }}>{item.qty}</td>
                           <td style={{ textAlign: "right" }}>
                             {(item.product?.price -
-                              item.product?.price * item.product?.disc) *
+                              item.product?.price *
+                                (item.product?.offer / 100)) *
                               item.qty}
                           </td>
                         </tr>
@@ -331,7 +342,6 @@ const OrderDetails = () => {
                   <span>Status:</span>
                   <span>{paymentInfo.status}</span>
                 </div>
-                
               </div>
             </div>
           </div>

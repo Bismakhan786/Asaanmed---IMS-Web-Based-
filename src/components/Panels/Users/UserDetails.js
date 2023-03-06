@@ -6,22 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserOrders } from "../../../Redux/slices/UsersSlice";
 import Loading from "../../../Shared/Loader/Loading";
 import CustomToast from "../../../Shared/Toast/CustomToast";
-import { toast } from "react-toastify";
-import { Spinner } from "react-activity";
 import "react-activity/dist/Spinner.css";
-import SuccessIcon from "@mui/icons-material/CheckCircleRounded";
-import ErrorIcon from "@mui/icons-material/ErrorRounded";
 import Dropdown from "../../../Shared/Dropdown/Dropdown";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import ListItemText from "@mui/material/ListItemText";
-import Avatar from "@mui/material/Avatar";
-import IconButton from "@mui/material/IconButton";
-import RateReviewIcon from "@mui/icons-material/RateReview";
-import DeleteIcon from "@mui/icons-material/Delete";
-import StarIcon from "@mui/icons-material/Star";
-import Rating from "@mui/material/Rating";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -32,6 +18,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar, Line } from "react-chartjs-2";
+import Table from "../../../Shared/Table/Table";
 
 ChartJS.register(
   CategoryScale,
@@ -105,9 +92,33 @@ const UserDetails = () => {
   ];
 
   let months = [];
+  let cancelled = 0;
+  let cancelledAmount = 0;
+  let delivered = 0;
+  let deliveredAmount = 0;
+  let processing = 0;
+  let processingAmount = 0;
+  let shipped = 0;
+  let shippedAmount = 0;
   let totalAmount = 0;
   orders &&
     orders.map((order) => {
+      if (order.orderStatus === "Delivered") {
+        delivered += 1;
+        deliveredAmount += order.totalPrice;
+      }
+      if (order.orderStatus === "Processing") {
+        processing += 1;
+        processingAmount += order.totalPrice;
+      }
+      if (order.orderStatus === "Shipped") {
+        shipped += 1;
+        shippedAmount += order.totalPrice;
+      }
+      if (order.orderStatus === "Cancelled") {
+        cancelled += 1;
+        cancelledAmount += order.totalPrice;
+      }
       months.push(
         new Date(order.createdAt.slice(0, 10)).toLocaleString("default", {
           month: "short",
@@ -115,6 +126,8 @@ const UserDetails = () => {
       );
       totalAmount += order.totalPrice;
     });
+
+  console.log(months);
 
   const labels = [
     "Jan",
@@ -140,11 +153,9 @@ const UserDetails = () => {
     labels,
     datasets: [
       {
-        type: "bar",
         data: monthCounts,
         backgroundColor: "rgba(248, 174, 14, 0.7)",
         hoverBackgroundColor: "rgb(248, 174, 14)",
-        barPercentage: 0.5,
       },
     ],
   };
@@ -161,26 +172,18 @@ const UserDetails = () => {
 
             <div className="user-stats-container">
               <div className="user-details-container">
-              <div>
-                    <span>Name:</span>
-                    <span>{name}</span>
-                  </div>
-                  <div>
-                    <span>Contact:</span>
-                    <span>{contact}</span>
-                  </div>
-
-                  <div>
-                    <span>Total Orders:</span>
-                    <span>{orders.length}</span>
-                  </div>
-                  <div>
-                    <span>Total Amount:</span>
-                    <span>{totalAmount}</span>
-                  </div>
-
-                <div className="addressBook">
+                <div>
+                  <span>Name:</span>
+                  <span>{name}</span>
+                </div>
+                <div>
+                  <span>Contact:</span>
+                  <span>{contact}</span>
+                </div>
+                {/* <div className="addressBook">
                   <span>Address Book</span>
+
+                  
 
                   <ol>
                     {addressBook?.map((address, index) => (
@@ -193,9 +196,73 @@ const UserDetails = () => {
                         </div>
                       </li>
                     ))}
-                    
                   </ol>
-                </div>
+                </div> */}
+                <h4 style={{margin: 'auto', marginTop: '20px', marginBottom: '20px'}}>Address Book</h4>
+                <table>
+                    <thead>
+                      <tr>
+                        <th>S.No</th>
+                        <th>Street Address</th>
+                        <th>Floor or Apartment</th>
+                        <th>City</th>
+                        <th>Postal Code</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {addressBook?.map((address, index) => (
+                        <tr key={index}>
+                          <td>{index+1}</td>
+                          <td>{address.streetAddress}</td>
+                          <td>{address.floorOrApartment}</td>
+                          <td>{address.city}</td>
+                          <td>{address.postalCode}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                <h4 style={{margin: 'auto', marginTop: '20px', marginBottom: '20px'}}>Total Orders</h4>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Processing</th>
+                      <th>Shipped</th>
+                      <th>Delivered</th>
+                      <th>Cancelled</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{processing}</td>
+                      <td>{shipped}</td>
+                      <td>{delivered}</td>
+                      <td>{cancelled}</td>
+                      <td>{orders.length}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <h4 style={{margin: 'auto', marginTop: '20px', marginBottom: '20px'}}>Total Amount</h4>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Processing</th>
+                      <th>Shipped</th>
+                      <th>Delivered</th>
+                      <th>Cancelled</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{processingAmount}</td>
+                      <td>{shippedAmount}</td>
+                      <td>{deliveredAmount}</td>
+                      <td>{cancelledAmount}</td>
+                      <td>{totalAmount}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
               <div className="graph-container">
                 <div>
@@ -209,7 +276,7 @@ const UserDetails = () => {
                   <button>Apply</button>
                 </div>
                 <div className="bar-chart-container">
-                  <Bar options={options} data={sampleData} />
+                  <Line options={options} data={sampleData} />
                 </div>
               </div>
             </div>

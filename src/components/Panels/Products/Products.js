@@ -165,6 +165,7 @@ const Products = () => {
     "Status",
     "Stock",
     "Rate",
+    "Orders"
   ];
   const rows = [];
 
@@ -181,6 +182,7 @@ const Products = () => {
         status: product.status,
         stock: product.stock,
         afterDiscount: product.price - product.price * (product.offer / 100),
+        orders: product.numOfOrders
       });
       detailedData.push(product);
     });

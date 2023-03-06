@@ -6,13 +6,6 @@ import OrdersIcon from "@mui/icons-material/AssignmentTurnedIn";
 import ProductsIcon from "@mui/icons-material/Inventory";
 import UsersIcon from "@mui/icons-material/GroupAdd";
 import SalesIcon from "@mui/icons-material/MonetizationOnRounded";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
-import PersonIcon from "@mui/icons-material/Person";
-import MedicationIcon from "@mui/icons-material/Medication";
 import PanelLayout from "../../Shared/PanelLayout/PanelLayout";
 import { getAllOrders } from "../../Redux/slices/OrdersSlice";
 import { getProductsFromAPI } from "../../Redux/slices/ProductsSlice";
@@ -35,7 +28,7 @@ import {
 } from "chart.js";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../Shared/Loader/Loading";
-import _, { find } from "lodash";
+import _ from "lodash";
 
 ChartJS.register(
   ArcElement,
@@ -91,7 +84,6 @@ function Dashboard() {
   const plugins = [
     {
       afterDraw: function (chart) {
-        console.log(chart);
         if (chart.data.datasets[0].data.length < 1) {
           let ctx = chart.ctx;
           let width = chart.width;
@@ -278,7 +270,10 @@ function Dashboard() {
     Object.keys(item.orders).map((m, i2) => {
       let monthlySum = 0;
       monthlyOrdersData[i].orders[m].map((o, i3) => {
-        monthlySum += o.order.totalPrice;
+        if(o.order.orderStatus === "Delivered"){
+
+          monthlySum += o.order.totalPrice;
+        }
       });
       finalMonthlyData.push({
         year: monthlyOrdersData[i].year,
@@ -493,14 +488,14 @@ function Dashboard() {
     ],
   };
 
-  console.log("SALES DATA");
-  console.log(salesData);
-  console.log("FINAL PRODUCTS DATA");
-  console.log(finalProductsData);
-  console.log("FINAL USERS DATA");
-  console.log(finalUsersData);
-  console.log("FINAL ORDERS DATA");
-  console.log(finalMonthlyData);
+  // console.log("SALES DATA");
+  // console.log(salesData);
+  // console.log("FINAL PRODUCTS DATA");
+  // console.log(finalProductsData);
+  // console.log("FINAL USERS DATA");
+  // console.log(finalUsersData);
+  // console.log("FINAL ORDERS DATA");
+  // console.log(finalMonthlyData);
 
   return (
     <PanelLayout

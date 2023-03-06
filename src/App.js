@@ -1,4 +1,3 @@
-import logo from "./logo.png";
 import "./App.css";
 import Header from "./components/Header/Header";
 import About from "./components/About/About";
@@ -23,9 +22,12 @@ import CategoryDetails from "./components/Panels/Categories/CategoryDetails";
 import Home from "./Home/Home";
 import Footer from "./components/Footer/Footer";
 import Media from "./components/Panels/Media/Media";
-import Register from "./components/Register/Register";
 
 function App() {
+
+  // window.addEventListener("contextmenu", (e) => e.preventDefault())
+  
+
   return (
     <Provider store={store}>
       <Router>
@@ -52,7 +54,6 @@ function App() {
           <Footer/>
           </>} />
 
-          <Route exact path="/am-regs-admin-authority" element={<Register />} />
           <Route exact path="/admin/login" element={<Login />} />
           <Route element={<ProtectedRoute />}>
             <Route exact path="/admin/dashboard" element={<Dashboard />} />

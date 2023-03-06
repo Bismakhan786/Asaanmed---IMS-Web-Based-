@@ -53,7 +53,7 @@ table input[type="checkbox"]:hover {
 }
 
 th {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: whitesmoke;
   font-size: 1vmax;
   color: rgba(0, 0, 0, 0.7);
   padding: 0.5vmax 1vmax;

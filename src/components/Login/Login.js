@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./Login.css";
-import logo from "../../logo.png";
 import { MdMailOutline, MdLockOpen } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,11 +30,11 @@ function Login() {
   return (
     <div className="Login">
       <div className="logo-container">
-        <img src={logo} className="logo" />
+        <img src={"/icon.png"} className="logo" alt=""/>
       </div>
       <div className="mobile-text">
         <div style={{justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
-        <img src={logo} className="logo" />
+        <img src={"/icon.png"} className="logo" alt=""/>
 
         </div>
         <p style={{textAlign: 'center'}}>Open in Laptop or PC for best user experience..</p>
