@@ -1,32 +1,33 @@
 import "./App.css";
 import Header from "./components/Header/Header";
-import About from "./components/About/About";
-import Contact from "./components/Contact/Contact";
-import Login from "./components/Login/Login";
+import Footer from "./components/Footer/Footer";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Dashboard from "./components/Panels/Dashboard";
 import { Provider } from "react-redux";
 import store from "./Redux/store";
 import ProtectedRoute from "./Routes/ProtectedRoute";
-import Users from "./components/Panels/Users/Users";
-import Products from "./components/Panels/Products/Products";
-import Orders from "./components/Panels/Orders/Orders";
-import Categories from "./components/Panels/Categories/Categories";
-import AdminProfile from "./components/Panels/AdminProfile";
-import CreateProduct from "./components/Panels/Products/CreateProduct";
-import CreateCategory from "./components/Panels/Categories/CreateCategory";
-import ProductDetails from "./components/Panels/Products/ProductDetails";
-import OrderDetails from "./components/Panels/Orders/OrderDetails";
-import UserDetails from "./components/Panels/Users/UserDetails";
-import CategoryDetails from "./components/Panels/Categories/CategoryDetails";
-import Home from "./Home/Home";
-import Footer from "./components/Footer/Footer";
-import Media from "./components/Panels/Media/Media";
+import {
+  About,
+  AdminProfile,
+  Categories,
+  CategoryDetails,
+  Contact,
+  CreateCategory,
+  CreateProduct,
+  Dashboard,
+  Home,
+  Login,
+  Media,
+  NotFound,
+  OrderDetails,
+  Orders,
+  ProductDetails,
+  Products,
+  UserDetails,
+  Users,
+} from "./pages";
 
 function App() {
-
   // window.addEventListener("contextmenu", (e) => e.preventDefault())
-  
 
   return (
     <Provider store={store}>
@@ -43,16 +44,28 @@ function App() {
               </>
             }
           />
-          <Route exact path="/about" element={<>
-          <Header/>
-          <About/>
-          <Footer/>
-          </>} />
-          <Route exact path="/contact" element={<>
-          <Header/>
-          <Contact/>
-          <Footer/>
-          </>} />
+          <Route
+            exact
+            path="/about"
+            element={
+              <>
+                <Header />
+                <About />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            exact
+            path="/contact"
+            element={
+              <>
+                <Header />
+                <Contact />
+                <Footer />
+              </>
+            }
+          />
 
           <Route exact path="/admin/login" element={<Login />} />
           <Route element={<ProtectedRoute />}>
@@ -92,9 +105,10 @@ function App() {
               path="/admin/categories/new"
               element={<CreateCategory />}
             />
-            
+
             <Route exact path="/admin/profile" element={<AdminProfile />} />
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </Provider>

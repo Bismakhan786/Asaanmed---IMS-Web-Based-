@@ -1,0 +1,37 @@
+.notfound{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.notfound>div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.notfound>div>h1:first-child{
+    font-size: 10vmax;
+    margin: 0;
+}
+
+
+.heading{
+    margin: 10px 0px;
+    font: 300 3vmax "Verdana";
+}
+
+.notfound p{
+    margin: 10px 0px;
+    font-size: large;
+}
+
+.notfound a{
+    color: cadetblue;
+    font: bold x-large "Verdana";
+    text-decoration-line: none;
+    border-bottom: 1px solid cadetblue;
+}
