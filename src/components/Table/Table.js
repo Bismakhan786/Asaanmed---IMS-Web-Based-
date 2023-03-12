@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Table.css";
 import { Link } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
@@ -12,9 +12,9 @@ const Table = ({
   onEdit,
   deleteFunc,
   loading,
-  selectItemsDisable=false,
+  selectItemsDisable = false,
   selectedItems,
-  emptyTableText="No data!",
+  emptyTableText = "No data!",
   deleteWarning = "Confirm Delete?",
   bulkActions = (
     <button className="bulk-action-button">
@@ -22,23 +22,21 @@ const Table = ({
     </button>
   ),
 }) => {
+  const [selected, setSelected] = useState(0);
   const [showWarning, setShowWarning] = useState(null);
-
   let keys = [];
-
   if (rows[0]) {
     keys = Object.keys(rows[0]);
   }
-
   const selectOrUnselectAll = () => {
     let parent = document.getElementById("parent-ck");
-
     if (parent.checked) {
       let all = document.getElementsByName("ck");
       all.forEach((checkbox) => {
         checkbox.checked = true;
       });
-
+      setSelected(all.length);
+      selectedItems.current = []
       rows.forEach((row) => {
         selectedItems.current.push(row.id);
       });
@@ -47,14 +45,12 @@ const Table = ({
       all.forEach((checkbox) => {
         checkbox.checked = false;
       });
-
+      setSelected(0);
       selectedItems.current = [];
     }
   };
-
   const selectUnselect = (id) => () => {
     let item = document.getElementById(id);
-
     if (selectedItems.current.length > 0) {
       let index = selectedItems.current.indexOf(id);
       if (index !== -1) {
@@ -62,7 +58,6 @@ const Table = ({
           selectedItems.current.splice(index, 1);
         }
       }
-
       if (index === -1) {
         if (item.checked) {
           selectedItems.current.push(id);
@@ -77,7 +72,7 @@ const Table = ({
         selectedItems.current.splice(index, 1);
       }
     }
-
+    setSelected(selectedItems.current.length);
   };
 
   const handleDltClick = (id) => (e) => {
@@ -111,13 +106,15 @@ const Table = ({
             <table>
               <thead>
                 <tr>
-                  {!selectItemsDisable && <th style={{ width: "5%", textAlign: "center" }}>
-                    <input
-                      type={"checkbox"}
-                      onClick={selectOrUnselectAll}
-                      id={"parent-ck"}
-                    />
-                  </th>}
+                  {!selectItemsDisable && (
+                    <th style={{ width: "5%", textAlign: "center" }}>
+                      <input
+                        type={"checkbox"}
+                        onClick={selectOrUnselectAll}
+                        id={"parent-ck"}
+                      />
+                    </th>
+                  )}
                   {columns.map((value, index) => (
                     <th key={index}>{value}</th>
                   ))}
@@ -129,14 +126,16 @@ const Table = ({
                   rows.map((row, index) => (
                     <>
                       <tr key={index}>
-                        {!selectItemsDisable && <td style={{ textAlign: "center" }}>
-                          <input
-                            type={"checkbox"}
-                            name={"ck"}
-                            onClick={selectUnselect(row.id)}
-                            id={row.id}
-                          />
-                        </td>}
+                        {!selectItemsDisable && (
+                          <td style={{ textAlign: "center" }}>
+                            <input
+                              type={"checkbox"}
+                              name={"ck"}
+                              onClick={selectUnselect(row.id)}
+                              id={row.id}
+                            />
+                          </td>
+                        )}
                         {keys.map((item, index) => (
                           <td key={index}>{row[item]}</td>
                         ))}
@@ -173,7 +172,6 @@ const Table = ({
                     </>
                   ))
                 ) : (
-
                   // Empty table component in case if there are no rows
                   <tr>
                     <td colSpan={1 + 1 + columns.length}>

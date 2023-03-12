@@ -13,7 +13,7 @@ const plan = {
   accessible alternative to buying medicines.
 `,
   listOPtions: ["300+ Medical products", "Order 24/7", "Get next day delivery"],
-  image: "/b2b.png",
+  image: "/b2b22.png",
 };
 const Home = () => {
   useEffect(() => {

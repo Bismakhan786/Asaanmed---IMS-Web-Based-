@@ -128,6 +128,8 @@
 .carousal-img > img {
   width: 100%;
   height: auto;
+  filter: drop-shadow(16px 9px 6px rgba(0, 0, 0, 0.25));
+
 }
 
 .partners-logo {
